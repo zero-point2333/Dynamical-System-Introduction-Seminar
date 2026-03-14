@@ -1,0 +1,226 @@
+\documentclass[11pt, a4paper, oneside]{ctexart}
+\usepackage{indentfirst, amsmath, amsthm, amssymb, graphicx, float, subfigure, geometry, setspace, xfrac, tikz-cd, enumerate}
+\usepackage[bookmarks=true, colorlinks, citecolor=blue, linkcolor=black]{hyperref}
+\ctexset{
+    section = {
+        format = {\Large\bfseries},
+    }
+}
+
+% 导言区
+
+\title{Note 01}
+\author{zero-point\_}
+\setlength{\parindent}{4ex}
+\pagestyle{plain}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+\setstretch{1.5}
+
+\newtheorem{theorem}{定理}[section]
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{remark}[theorem]{注}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+
+\begin{document}
+	\maketitle
+    \section{内容安排}
+    \begin{itemize}
+        \item 开场：动力系统简介
+        \item 拓扑动力系统研究的对象：在同胚下不变的性质
+        \item 拓扑传递、极小的轨道定义
+        \item 例 1：圆的 rigid 旋转、拓扑群的平移
+        \item 拓扑传递、拓扑混合的拓扑定义
+        \item 例 2：环面的平移：Fourier 变换法
+        \item 略讲：环面的线性流与光滑动力系统
+        \item 引入周期点数量的指标
+        \item 例 3：扩张映射：考虑 $m$ 进制小数，铺垫符号动力系统
+        \item 例 4：双曲环面自同构：周期点附着法
+    \end{itemize}
+
+    \section{主题介绍——动力系统分类}
+    \begin{itemize}
+        \item 迭代对象：离散动力系统、连续动力系统（流）
+        \item 研究对象：光滑动力系统（Hamilton）、拓扑动力系统、复动力系统、SCV 动力系统、符号动力系统、算术动力系统、Teichmüller 动力系统
+        \item 研究工具：遍历论、拓扑动力系统、符号动力系统
+    \end{itemize}
+
+    \section{拓扑动力系统介绍}
+    “拓扑”的动力系统，研究的对象自然是拓扑空间，通常迭代的函数具有连续性，且使用拓扑进行概念刻画.
+
+    数学最常见的主题之一，就是分类，而要分类就要先定义等价关系.
+    \begin{definition}[拓扑共轭、因子]
+        设 $f:S\to S,g:T\to T$ 是连续映射，若有同胚 $h:S\to T$ 使得 $h\circ f=g\circ h$，则称 $f,g$ 拓扑共轭，$h$ 是共轭函数. 若存在 $h$ 使得上式成立，但 $h$ 不是同胚而知识满射，则称 $g$ 是 $f$ 的因子，$h$ 是半共轭函数.
+    \end{definition}
+    由于同胚的良好拓扑性质，因此两个拓扑共轭的映射，它们的拓扑动力性质必然是相同的（请对以下的性质进行验证）.
+
+    既然有分类就有代表元，因此我们会先分析几个最简单的例子，而我们自然会期望能将这些例子的性质迁移到其他的对象上. 接下来，我们会边举例边引入概念.
+
+    \subsection{拓扑传递与极小}
+    \begin{example}[圆的旋转]
+        考虑 $S^1=\{z\in \C\mid \abs{z}=1\}\simeq \R/\Z$，这里前一种定义的乘法等同于后一种定义的模 $1$ 加法，接下来我们先采用后一种定义. 我们考虑 $R_{\alpha}:S^1\to S^1$，这里 $x\mapsto x+\alpha$.
+
+        显然，当 $\alpha\in\Q$ 时，所有点都是周期点，而 $\alpha\notin \Q$ 时，每个点的前向轨道都稠密（请证明）. 前向轨道的稠密性是一个典型的拓扑性质，这就引出了我们的第一个刻画.
+    \end{example}
+
+    \begin{definition}[拓扑传递、极小的轨道定义]
+        $f:X\to X$ 是连续函数，若 $\exists\; x\in X$ 使得前向轨道 $\cO_f(x)={\{f^n(x)\}}_{n\in\Z}$ 在 $X$ 中稠密，则称 $f$ 拓扑传递；若 $\forall\; x\in X,\; \overline{\cO_f(x)}=X$，则称 $f$ 极小.
+    \end{definition}
+    \begin{remark}
+        显然，极小的映射一定是拓扑传递的.
+    \end{remark}
+    \begin{definition}[不变集]
+        设 $A\subset X$，若连续函数 $f:X\to X$ 保证 $f(A)=A$，则称 $A$ 是 $f$ 的不变集.
+    \end{definition}
+    \begin{definition}[极小的拓扑定义]
+        若连续函数 $f:X\to X$ 的闭不变集只有空集和全集两个，则称 $f$ 极小（为何与前面的定义相合？）.
+    \end{definition}
+
+    \begin{example}[拓扑群的极小性]\label{例3.6}
+        给定拓扑群 $G$，若 $L_{g_0}:G\to G$ 是平移映射 $g\mapsto g_0\cdot g$，且 $L_{g_0}$ 拓扑传递，则 $L_{g_0}$ 极小（由于平移与闭包可交换）.
+    \end{example}
+
+    \subsection{拓扑传递与拓扑混合}
+    \begin{example}[环面的平移]
+        拓扑课上我们会学到，环面 $\T^n=\prod\limits_{n}S^1=\R^n/\Z^n$，其中 $n=2$ 情形得到的就是最经典的甜甜圈环面. 既然 $\R^n,\Z^n$ 都是线性空间，则 $\T^n$ 也是，于是考虑平移 $T_{\gamma}:\T^n\to\T^n$，其中 $\gamma=(\gamma_1,\ldots,\gamma_n)\in\T^n$，$T_{\gamma}(x_1,\ldots,x_n)=(x_1+\gamma_1,\ldots,x_n+\gamma_n)$. 显然，当 $\gamma$ 各坐标分量都是有理数时，$T_{\gamma}$ 是周期函数. 但是，并不意味着其他情况就一定是极小的（注意例~\ref{例3.6}，这也说明 $T_{\gamma}$ 不一定拓扑传递）.
+    \end{example}
+
+    \begin{proposition}\label{命题3.9}
+        $T_{\gamma}$ 极小当且仅当 $\gamma_1,\ldots,\gamma_n,1$ 有理独立，也就是说，若 $\sum\limits_{i=1}^{n}k_i\gamma_i$ 是整数，则整数 $k_1=\cdots=k_n=0$.
+    \end{proposition}
+
+    这个事实并不平凡，为此，我们先引入拓扑传递的拓扑定义.
+    \begin{definition}[拓扑传递的拓扑定义]
+        设 $X$ 是局部紧可分度量空间，$f:X\to X$ 是连续映射，若对任意非空开集 $U,V\subset X$ 都存在整数 $N=N(U,V)$，使得 $f^{N}(U)\cap V\neq\emptyset$，则称 $f$ 拓扑传递.
+    \end{definition}
+    \begin{proof}[相合性证明]
+        轨道定义 $\Rightarrow$ 拓扑定义是显然的.
+
+        对于 $\Leftarrow$ 方向，注意到局部紧可分度量空间有可数邻域基（也即存在一个开集族 $\{U_i\}$ 使得 $\forall\;x\in X$，任取 $x$ 的开邻域 $U$，则存在 $i$ 使得 $x\in U_i\subset U$）. 更进一步的，我们可以设 $\{U_i\}$ 是预紧开集族. 由于拓扑定义，存在 $N_1$ 使得 $f^{N_1}(U_1)\cap U_2\neq\emptyset$，于是设非空开集 $V_1$ 满足 $\overline{V}_1\subset U_1\cap f^{-N_1}(U_2)$（这里我们使用度量空间的拓扑基来保证 $V_1$ 的存在性），由于 $U_1$ 预紧则 $V_1$ 预紧. 类似的，存在 $N_2$ 使得 $f^{N_2}(V_1)\cap U_3\neq\emptyset$，于是存在非空预紧开集 $V_2$ 使得 $\overline{V_2}\subset V_1\cap f^{-N_2}(U_3)$，于是以此类推得到 $\{V_n\}$. 设闭集套 $V=\bigcap\limits_{n=1}^{\infty}\overline{V}_n=\bigcap\limits_{n=1}^{\infty}V_n$，由于 $\overline{V}_1$ 紧而非空，设 $x\in V$，则 $x$ 轨道稠密（只要经过所有 $U_i$ 即可）.
+    \end{proof}
+
+    \begin{corollary}
+        若 $f$ 还是开映射，则 $f$ 拓扑传递当且仅当任意两个非空开不变集都相交.
+    \end{corollary}
+    
+    \begin{definition}[不变函数]
+        若 $\varphi$ 满足 $\varphi\circ f=\varphi$，则称 $\varphi$ 是 $f$-不变函数.
+    \end{definition}
+    \begin{corollary}
+        若 $f$ 拓扑传递，则不存在从 $X$ 到 $\R$ 的 $f$-不变非常值连续函数.
+    \end{corollary}
+    \begin{proof}
+        考虑 $\{x\in X\mid \varphi(x)>t\}$ 和 $\{x\in X\mid \varphi(x)<t\}$，注意到存在 $t\in\R$ 使得二者都非空，而它们都是开不变集.
+    \end{proof}
+
+    \begin{proof}[命题~\ref{命题3.9} 的证明]
+        如果有理独立条件不成立，则设 $\varphi(x)=\sin 2\pi(\sum\limits_{i=1}^{n}k_i x_i)$，这里整数 $\{k_i\}$ 满足 $\sum\limits_{i=1}^{n}k_i\gamma_i$ 是整数. $\varphi$ 是 $T_{\gamma}$-不变非常值连续函数.
+
+        反过来，我们证明，若有理独立条件成立，则 $T_{\gamma}$ 拓扑传递. 我们采用反证法. 设 $U,V$ 是不交非空 $f$-不变开集，则 $\chi_U\circ T_{\gamma}=\chi_U$（$T_{\gamma}$ 可逆才有特征函数的不变）. 设 $\chi_U$ 的 Fourier 级数 $f(x)=\sum\limits_{(k_1,\ldots,k_n)\in\Z^n}\chi_{k_1,\ldots,k_n}\exp(2\pi i\sum\limits_{j=1}^{n}k_j x_j)$，则在非 $\partial U$ 点处，由于 $\chi_U$ 可微，则在这些点上 $f(x)=\chi_U(x)$. 另外对 $\chi_U(T_{\gamma}x)$ 也进行 Fourier 级数展开：
+        \[
+        F(x)=f(T_{\gamma}(x))=\sum\limits_{(k_1,\ldots,k_n)\in\Z^n}\chi_{k_1,\ldots,k_n}\exp(2\pi i\sum\limits_{j=1}^{n}k_j \gamma_j)\exp(2\pi i\sum\limits_{j=1}^{n}k_j x_j)
+        \]
+        但是 $\chi_U$ 与 $\chi_U\circ T_{\gamma}$ 的 Fourier 级数是相等的（唯一性定理），于是对任意下标 $\{k_i\}$ 必须有 $\chi_{k_1,\ldots,k_n}=\chi_{k_1,\ldots,k_n}\exp(2\pi i\sum\limits_{j=1}^{n}k_j \gamma_j)$. 由于有理独立条件成立，于是 $\exp(2\pi i\sum\limits_{j=1}^{n}k_j \gamma_j)\neq 1$ 对所有非全零下标恒成立，于是 $\chi_{k_1,\ldots,k_n}=0$ 对所有非全零下标 $\{k_i\}$ 成立，于是 $f$ 全局是常数. 但是 $U$ 非空，则在 $x\in U$ 上 $f(x)=\chi_U(x)=1$，在 $x\in V$ 上 $f(x)=\chi_U(x)=0$，矛盾.
+    \end{proof}
+    \begin{remark}
+        这一证明引入了 Fourier 分析这一常用的工具. 虽然 Fourier 级数与连续函数的相合性并不好，但多数时候，其性质已经足够用了.
+    \end{remark}
+
+    类似于拓扑传递与极小在量词上的区别，我们修改拓扑传递的拓扑定义中的量词，得到：
+    \begin{definition}[拓扑混合的拓扑定义]
+        设 $f:X\to X$ 是连续映射，若对任意非空开集 $U,V\subset X$ 都存在整数 $N=N(U,V)$，使得 $\forall\; n>N,\; f^{n}(U)\cap V\neq\emptyset$，则称 $f$ 拓扑混合.
+    \end{definition}
+    \begin{remark}
+        显然，拓扑混合的映射一定拓扑传递.
+    \end{remark}
+    \begin{example}[环面的平移]
+        环面平移显然不是拓扑混合的，因为“相对位置”保持不变. 反过来，如果映射使得区域都变得膨胀，那我们自然期望映射是拓扑混合的.
+    \end{example}
+
+    \begin{remark}
+        上述所有的概念和证明同样可以迁移到流上（请尝试）.
+
+        光滑动力系统不是本次讨论班的重点，这里粗略介绍一下. 我们简要介绍测地流：给定一个 Riemann 曲面 $(M,g)$，这里 $g$ 是 Riemann 度量，定义 Lagrange 函数 $L(x,v)=\frac{1}{2}g_x(v,v)$（某点的速度 $(x,v)$ 显然生活在切丛 $TM$ 上），那么 Euler-Lagrange 方程给出了 $TM$ 上的流. 由于 Hamiltonian 量 $H=\frac{1}{2}g_x(v,v)$ 在流上是不变量（第一积分），因此流也可以限制在球丛 $SM$ 上. 测地流的轨道在 $M$ 上的投影是测地线.
+    \end{remark}
+
+    \section{扩张映射}
+    相对于压缩映射，扩张映射的动力性质复杂得多.
+    \begin{definition}[周期点数]
+        设 $P_n(f)$ 是 $f$ 周期为 $n$ 的周期点数（可以不是最小正周期）.
+    \end{definition}
+    \begin{proposition}[均匀扩张映射]
+        设 $E_k:S^1\to S^1$，这里 $k\in\Z$，满足 $E_k(x)=kx$. 则 $P_n(E_k)=k^n-1$，周期点集稠密，且 $E_k$ 拓扑混合，但是不极小.
+    \end{proposition}
+    \begin{proof}
+        唯一不平凡的事实是 $E_k$ 拓扑混合，我们使用拓扑定义来验证. 任意开集 $U$ 都包含一个形如 $I=[\frac{l}{k^n},\frac{l+1}{k^n}]$ 的小区间，这里 $n,l$ 是任意正整数. 因此 $\forall\; r\geq n,\; E_k^{r}(U)\supset E_k^{r-n}(\pi([l,l+1]))=S^1$（这里 $\pi:\R\to \R/\Z$ 是投影）.
+    \end{proof}
+
+    既然 $E_k$ 不极小，我们会期望可以有比较复杂的轨道行为. 在研究它之前，我们先给出更多的概念.
+
+    \begin{definition}[$\omega$/$\alpha$-极限点/集]
+        给定 $f:X\to X,x\in X$，若 $y\in X$ 是 $x$ 的前向轨道的聚点（也即 $\exists\; \{t_n>0\}$ 使得 $\lim\limits_{n\to\infty}f^{t_n}(x)=y$），则称 $y$ 是 $x$ 的 $\omega$-极限点；如果是反向轨道则是 $\alpha$-极限点. $\omega(x)$ 是 $x$ 的 $\omega$-极限点组成的集合（$\alpha$ 同理）.
+    \end{definition}
+    \begin{remark}
+        由定义知 $\omega(x)=\bigcap\limits_{T=0}^{\infty}\overline{\bigcup\limits_{t\geq T}\varphi^t(\{x\})},\; \alpha(x)=\bigcap\limits_{T=0}^{-\infty}\overline{\bigcup\limits_{t\leq T}\varphi^t(\{x\})}$.
+    \end{remark}
+    上述的概念对离散时间和连续时间都适用.
+
+    之前的过程中，我们已经事实上使用了 $k$ 进制小数的概念（在哪里用了？）. 接下来，我们将使用它构造出能产生 Cantor 集的轨道.
+    \begin{theorem}
+        设 $k=3$. 存在 $x\in S^1$ 使得 $E_3$ 下 $\omega(x)$ 是 Cantor（三分）集 $K$. $K$ 是 $E_3$-不变集.
+    \end{theorem}
+    \begin{proof}
+        考虑将 $S^1$ 上的点用三进制小数表示（是否唯一对应？），于是 Cantor 集就是那些只含 $0,2$ 两种数码的小数组成的集合. $E_3$ 实际上就是把小数“左移”一位，因此 $K$ 显然不变. 根据这一思想，使用简单的集合论就可以构造出 $x$ 的三进制小数表示，而这样的表示可以唯一对应到 $S^1$ 上的点.
+        
+        $x$ 的存在性也可以有非构造性的证明. $K$ 中的点与没有数码 $1$ 的三进制小数表示实际上是一一对应的. 设 $x\in K$，其表示是 $0.x_1x_2x_3\cdots$，则定义 $h(x)=0.\frac{x_1}{2}\frac{x_2}{2}\frac{x_3}{2}\cdots$，从而 $h:K\to [0,1]$ 是连续单调递增的满射. 注意到由于“左移”操作，$h\circ E_3=E_2\circ h$. 更进一步的，我们设 $D=[0,1]\setminus\{\frac{2l-1}{2^k}\mid k,l\in\Z_{+}\}$，于是 $D$ 上 $h^{-1}$ 良定义且连续（为什么？），从而 $h$ 是同胚，且 $D$ 在 $[0,1]$ 上稠密，则 $h^{-1}(D)$ 在 $K$ 上稠密. 由于 $E_2$ 拓扑传递，则取 $x$ 使得 $E_2$ 下 $x$ 的前向轨道稠密，于是 $h^{-1}(x)$ 的前向轨道在 $K$ 上稠密.
+    \end{proof}
+    \begin{remark}
+        转化为小数的思想，实际上背后藏了整个符号动力系统，这是我们下一讲的内容.
+    \end{remark}
+
+    \section{双曲环面自同构}
+    最后我们再看一个例子. 首先，可对角化的线性映射通过特征值分解，在每个特征子空间都有完全固定的缩放行为. 这时我们引入环面，由于粘合的存在，动力性质发生了巨大的变化.
+
+    典型的映射是 $L(x,y)=(2x+y,x+y)$，容易验证 $L$ 可以限制为 $\T^2\to \T^2$ 的可逆线性映射. 它的特征值和特征向量分别是 $(\lambda_1=\frac{3+\sqrt{5}}{2},(1,\frac{\sqrt{5}-1}{2})),(\lambda_2=\lambda_1^{-1}=\frac{3+\sqrt{5}}{2},(1,\frac{-\sqrt{5}-1}{2}))$，都是无理数，因此很难拥有和原来线性映射一样的性质.
+
+    \begin{theorem}\label{定理5.1}
+        $L$ 的周期点稠密，$P_n(L)=\lambda_1^n+\lambda_1^{-n}-2$. $L$ 拓扑传递.
+    \end{theorem}
+    为了证明这一结论，我们需要先承认 Pick 定理（用三角剖分很好证）.
+
+    \begin{theorem}[Pick]
+        以整点为顶点的多边形，其面积就是 $n+\frac{b}{2}-1$，其中 $n$ 是多边形内部的整点数，$b$ 是多边形边界上的整点数.
+    \end{theorem}
+    \begin{proof}[定理~\ref{定理5.1} 的证明]
+        首先计算 $P_n$. 设 $L^n(x,y)=(ax+by,cx+dy)$，则考虑 $G=L^n-\Id$，于是考虑 $0$ 在 $G\mid_{\T^2}$ 上的原像数，由 Pick 定理知就是 $\det(G)=\abs{(\lambda_1^n-1)(\lambda_1^{-n}-1)}=\lambda_1^n+\lambda_1^{-n}-2$，原像数就是 $n$-周期点数. 要证明周期点稠密，我们只需注意到，所有有理点都是 $L$ 的周期点（使用鸽巢原理和 $L$ 可逆的性质）. 反过来，也容易证明周期点都是有理点.
+
+        最后我们考察是否满足拓扑传递的拓扑定义. 任取开集 $U,V$，由稠密性设 $p\in U,q\in V$ 是周期点，设 $n$ 是它们的共同周期（取最小公倍数即可）. 考虑斜率 $\frac{\sqrt{5}-1}{2}$ 的过点 $p$ 的射线，它在 $\T^2$ 上稠密（为什么？考虑线性流）. 又考虑斜率 $\frac{-\sqrt{5}-1}{2}$ 的过点 $q$ 的线段，端点在 $\partial V$ 上且整个线段都在 $V$ 内. 于是可以取射线与线段的第一次交点 $r$，则 $k\to\infty$ 时，由于线段是收缩方向，则渐近有 $L^{kn}(r)\to L^{kn}(q)=q$（由于 $q$ 有周期 $n$）；$k\to -\infty$ 时，由于射线对于 $L^{-1}$ 是收缩方向，则同理 $L^{kn}(r)\to p$，于是取一个足够大的 $k$，则 $L^{-kn}(r)\in U$ 且 $L^{kn}(r)\in V$.
+    \end{proof}
+
+    我们还可以把拓扑传递加强为拓扑混合.
+    \begin{theorem}
+        $L$ 拓扑混合.
+    \end{theorem}
+    \begin{proof}
+        设 $\omega=(1,\frac{\sqrt{5}-1}{2})$，则考虑线性流 $T_{\omega}^t$，它是极小的，而且轨道就是扩张方向. 首先取定开集 $U,V$，则取 $\varepsilon>0$ 使得 $V$ 中有一个半径 $\varepsilon$ 的开球. $U$ 一定包含了一条扩张线段 $J$.
+        
+        接下来，我们证明 $\exists\; T>0$，使得任意长度不小于 $T$ 的扩张线段（可以穿越粘合的边界）都能与所有半径为 $\varepsilon$ 的开球相交. 由于 $\T^2$ 紧，于是可以取有限覆盖 $\T^2=\bigcup\limits_{i=1}^{k}B(z_i,\frac{\varepsilon}{2})$，于是对每个“起点” $x$，由于 $T_{\omega}^t$ 的极小性知存在 $T_x>0$ 使得从 $x$ 出发、长度为 $T_x$ 的正向轨道与所有 $B(z_i,\frac{\varepsilon}{2})$ 相交. 容易证明，存在 $x$ 的小邻域 $U_x$，使得 $\forall\; y\in U_x$，从 $y$ 出发、长度为 $T_x$ 的正向轨道也与所有 $B(z_i,\frac{\varepsilon}{2})$ 相交. 再次取有限覆盖 $\T^2=\bigcup\limits_{i=1}^{l}U_{x_i}$，则取 $T=\max\limits_{1\leq i\leq l}T_{x_i}$. 注意到所有半径为 $\varepsilon$ 的开球都包含了至少一个 $B(z_i,\frac{\varepsilon}{2})$（考虑圆心），即证.
+
+        最后，由于 $J$ 是扩张线段，则 $\exists\; N>0,\; \forall\; n>N,\; \abs{L^n(J)}>T$，于是所有的 $L^n(J)$ 都与 $V$ 相交，即证.
+    \end{proof}
+    \begin{remark}
+        $L$ 是最典型的一个 Anosov 自同构（双曲环面自同构）. 这个例子还将在下一讲出现，作为 Markov 分割的最重要的例子.
+    \end{remark}
+
+\end{document}
