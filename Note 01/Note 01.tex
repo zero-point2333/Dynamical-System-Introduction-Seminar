@@ -71,14 +71,17 @@
     \begin{example}[圆的旋转]
         考虑 $S^1=\{z\in \C\mid \abs{z}=1\}\simeq \R/\Z$，这里前一种定义的乘法等同于后一种定义的模 $1$ 加法，接下来我们先采用后一种定义. 我们考虑 $R_{\alpha}:S^1\to S^1$，这里 $x\mapsto x+\alpha$.
 
-        显然，当 $\alpha\in\Q$ 时，所有点都是周期点，而 $\alpha\notin \Q$ 时，每个点的前向轨道都稠密（请证明）. 前向轨道的稠密性是一个典型的拓扑性质，这就引出了我们的第一个刻画.
+        显然，当 $\alpha\in\Q$ 时，所有点都是周期点，而 $\alpha\notin \Q$ 时，每个点的轨道都稠密（请证明）. 轨道的稠密性是一个典型的拓扑性质，这就引出了我们的第一个刻画.
     \end{example}
 
     \begin{definition}[拓扑传递、极小的轨道定义]
-        $f:X\to X$ 是连续函数，若 $\exists\; x\in X$ 使得前向轨道 $\cO_f(x)={\{f^n(x)\}}_{n\in\Z}$ 在 $X$ 中稠密，则称 $f$ 拓扑传递；若 $\forall\; x\in X,\; \overline{\cO_f(x)}=X$，则称 $f$ 极小.
+        $f:X\to X$ 是连续函数，若 $\exists\; x\in X$ 使得双向轨道 $\cO_f(x)={\{f^n(x)\}}_{n\in\Z}$ 在 $X$ 中稠密，则称 $f$ 拓扑传递；若 $\forall\; x\in X,\; \overline{\cO_f(x)}=X$，则称 $f$ 极小.
     \end{definition}
     \begin{remark}
-        显然，极小的映射一定是拓扑传递的.
+        \begin{itemize}
+            \item 显然，极小的映射一定是拓扑传递的.
+            \item 若前向轨道稠密，则分别称为正拓扑传递和正极小. 显然，正的比双向的更难达成.
+        \end{itemize}
     \end{remark}
     \begin{definition}[不变集]
         设 $A\subset X$，若连续函数 $f:X\to X$ 保证 $f(A)=A$，则称 $A$ 是 $f$ 的不变集.
@@ -102,13 +105,18 @@
 
     这个事实并不平凡，为此，我们先引入拓扑传递的拓扑定义.
     \begin{definition}[拓扑传递的拓扑定义]
-        设 $X$ 是局部紧可分度量空间，$f:X\to X$ 是连续映射，若对任意非空开集 $U,V\subset X$ 都存在整数 $N=N(U,V)$，使得 $f^{N}(U)\cap V\neq\emptyset$，则称 $f$ 拓扑传递.
+        设 $X$ 是拓扑空间，$f:X\to X$ 是连续映射，若对任意非空开集 $U,V\subset X$ 都存在整数 $N=N(U,V)$，使得 $f^{N}(U)\cap V\neq\emptyset$，则称 $f$ 拓扑传递.
     \end{definition}
     \begin{proof}[相合性证明]
+        必须指出，二者并不完全相合，只有在 $X$ 是第二可数 Baire 空间（书上的局部紧度量空间是一种局部紧正则空间，这是 Baire 空间；完备度量空间也是 Baire 空间）时成立.
+
         轨道定义 $\Rightarrow$ 拓扑定义是显然的.
 
-        对于 $\Leftarrow$ 方向，注意到局部紧可分度量空间有可数邻域基（也即存在一个开集族 $\{U_i\}$ 使得 $\forall\;x\in X$，任取 $x$ 的开邻域 $U$，则存在 $i$ 使得 $x\in U_i\subset U$）. 更进一步的，我们可以设 $\{U_i\}$ 是预紧开集族. 由于拓扑定义，存在 $N_1$ 使得 $f^{N_1}(U_1)\cap U_2\neq\emptyset$，于是设非空开集 $V_1$ 满足 $\overline{V}_1\subset U_1\cap f^{-N_1}(U_2)$（这里我们使用度量空间的拓扑基来保证 $V_1$ 的存在性），由于 $U_1$ 预紧则 $V_1$ 预紧. 类似的，存在 $N_2$ 使得 $f^{N_2}(V_1)\cap U_3\neq\emptyset$，于是存在非空预紧开集 $V_2$ 使得 $\overline{V_2}\subset V_1\cap f^{-N_2}(U_3)$，于是以此类推得到 $\{V_n\}$. 设闭集套 $V=\bigcap\limits_{n=1}^{\infty}\overline{V}_n=\bigcap\limits_{n=1}^{\infty}V_n$，由于 $\overline{V}_1$ 紧而非空，设 $x\in V$，则 $x$ 轨道稠密（只要经过所有 $U_i$ 即可）.
+        对于 $\Leftarrow$ 方向，设 $A=\{x\in X\mid \overline{\cO_f(x)}=X\}$，则我们证明它非空：取 $X$ 的可数拓扑基 ${\{O_i\}}_{i\in\Z}$，于是 $\forall\; i\in \Z$，开集 $\bigcup\limits_{k\in\Z}T^{-k}(O_i)$ 稠密，于是 $Y=\bigcap\limits_{i\in \Z}\bigcup\limits_{k\in\Z}T^{-k}(O_i)$ 作为开稠集的交稠密. 注意到 $x\in Y$ 当且仅当任意 $i\in\Z$ 都存在 $k\in\Z$ 使得 $T^k(x)\in O_i$，也就是说 $\cO_f(x)\cap O_i\neq\emptyset$，也即 $\cO_f(x)$ 稠密，也即 $x\in A$. 于是 $Y=A$ 稠密，从而非空，得证.
     \end{proof}
+    \begin{remark}
+        正拓扑传递也可以有拓扑定义，请使用类似的方法尝试证明在第二可数 Baire 空间中，拓扑定义与轨道定义相合.
+    \end{remark}
 
     \begin{corollary}
         若 $f$ 还是开映射，则 $f$ 拓扑传递当且仅当任意两个非空开不变集都相交.
