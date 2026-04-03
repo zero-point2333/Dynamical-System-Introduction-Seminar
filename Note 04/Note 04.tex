@@ -1,0 +1,154 @@
+\documentclass[11pt, a4paper, oneside]{ctexart}
+\usepackage{indentfirst, amsmath, amsthm, amssymb, graphicx, float, subfigure, geometry, setspace, xfrac, tikz-cd, enumerate}
+\usepackage[bookmarks=true, colorlinks, citecolor=blue, linkcolor=black]{hyperref}
+\ctexset{
+    section = {
+        format = {\Large\bfseries},
+    }
+}
+
+% 导言区
+
+\title{Note 04}
+\author{zero-point\_}
+\setlength{\parindent}{4ex}
+\pagestyle{plain}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+\setstretch{1.5}
+
+\newtheorem{theorem}{定理}[section]
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{remark}[theorem]{注}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\re}{\mathrm{Re}}
+\renewcommand{\top}{\mathrm{top}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\norm}[1]{\left\Vert{#1}\right\Vert}
+\renewcommand{\v}[1]{\mathbf{#1}}
+
+\begin{document}
+	\maketitle
+    \section{内容安排}
+    \begin{itemize}
+        \item 不变测度与 Krylov-Bogolubov 定理
+        \item Poincaré 回归定理
+        \item Birkhoff 遍历定理
+    \end{itemize}
+
+    \section{渐近分布与不变测度}
+    从测度角度考量迭代是另一种大的思路，由此发展出了遍历论.
+
+    \begin{definition}[不变测度]
+        设 $(X, \cB, \mu)$ 是一个概率空间，$f: X \to X$ 是一个可测变换（将可测集映到可测集）. 如果 $\mu$ 满足 $\mu(f^{-1}(A)) = \mu(A)$ 对所有 $A \in \cB$ 成立，则称 $\mu$ 是 $f$ 的不变测度，$f$ 称为 $\mu$ 的保测变换.
+    \end{definition}
+    \begin{definition}[时间平均]
+        给定拓扑空间 $X$，函数 $\varphi:X\to \R$，定义 Birkhoff 时间平均 $I_x(\varphi)=\lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))$.
+    \end{definition}
+    \begin{remark}\label{注2.3}
+        首先我们代入 $\varphi=\chi_U$，则时间平均说明轨道与 $U$ 相交的“概率”. 我们先不考虑其良定义问题，而是给出一些基础性质.
+        \begin{itemize}
+            \item 线性性：$I_x(\alpha\varphi+\beta\psi)=\alpha I_x(\varphi)+\beta I_x(\psi)$；
+            \item 有界性：$\abs{I_x(\varphi)}\leq \sup\limits_{y\in X}\abs{\varphi(y)}$；
+            \item 非负性：$\varphi\geq 0\Rightarrow I_x(\varphi)\geq 0$；且 $I_x 1=1$；
+            \item 不变性：$I_x(\varphi\circ f)=I_x(\varphi)$，或者说，$I_{f(x)}(\varphi)=I_x(\varphi)$.
+        \end{itemize}
+        若 $I_x$ 对所有连续函数（或任何函数生活在的 $\R$-线性空间）都良定义，则 $I_x$ 是 $C(X)\to \R$ 的有界线性算子，从而连续. 由 Riesz 表示定理（这里额外要求 $X$ 紧），存在唯一的 Borel 概率测度 $\mu_x$ 使得 $I_x(\varphi)=\int_X \varphi d\mu_x$. 不变性说明 $\int_X \varphi\circ f d\mu_x=\int_X \varphi d\mu_x$，即 $\mu_x$ 是 $f$ 的不变测度（代入 $\varphi=\chi_U$ 对每个开集 $U$，由于 $\chi_U$ 可以被连续函数逼近即证）.
+    \end{remark}
+
+    \begin{theorem}[Krylov-Bogolubov 定理]\label{定理2.4}
+        设 $X$ 是一个紧度量空间，$f:X\to X$ 是一个连续映射，则 $f$ 至少存在一个 Borel 不变测度.
+    \end{theorem}
+    \begin{proof}
+        任取 $x\in X$，我们的动机是说明 $I_x$ 定义式中有子列的极限是良定义的. 取 $C(X)$ 的可数稠密集 $\{\varphi_n\}$（使用 Stone-Weierstrass 定理：取 $X$ 的可数稠密集 $\{x_n\}$，定义 $f_n(x)=d(x,x_n)$，则由 $\{f_n\}\cup \{1\}$ 生成的代数 $\cA$ 满足定理条件），由于 $X$ 的进行，每个 $\varphi_m$ 都满足 $\{\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi_m(f^k(x))\}$ 是有界的，因此任意子列都存在子列收敛到 $J(\varphi_m)\in\R$. 通过对角线法，可以构造出一个子列 $\{n_k\}$，使得对于所有的 $\varphi_m$，都有 $\lim_{k \to \infty} \frac{1}{n_k}\sum_{j=0}^{n_k-1} \varphi_m(f^j(x)) = J(\varphi_m)$.
+        
+        接下来我们把 $J$ 延拓到全空间 $C(X)$ 上. 对于任意 $\varphi\in C(X)$，存在 $\{\varphi_{m_l}\}$ 使得 $\varphi_{m_l}\rightrightarrows \varphi$（则 $\{\varphi_{m_l}\}$ 一致有界，则不妨设 $\lim\limits_{l\to\infty} J(\varphi_{m_l})$ 存在），则 $\abs{\frac{1}{n_k}\sum\limits_{j=0}^{n_k-1} \varphi(f^j(x))-\frac{1}{n_k}\sum\limits_{j=0}^{n_k-1} \varphi_{m_l}(f^j(x))}\leq \norm{\varphi-\varphi_{m_l}}_{\infty}$，两边先令 $k\to\infty$ 再令 $l\to\infty$（这里先对 $k$ 取上极限再取 $l$ 极限可知下式的上极限存在；先对 $k$ 取下极限再取 $l$ 极限可知下式的下极限存在且与上极限相等），则 $\lim\limits_{k\to\infty}\frac{1}{n_k}\sum\limits_{j=0}^{n_k-1} \varphi(f^j(x))=:J(\varphi)$ 存在. 由定义式知 $J$ 有界线性，则 $J$ 连续. 更进一步的，注~\ref{注2.3} 中的性质对 $J$ 同样成立，于是它对应了不变 Borel 概率测度 $\mu_x$.
+    \end{proof}
+
+    \section{Poincaré 回归定理}
+    接下来的定理应该是最出圈的动力系统定理了，为此值得单开一个章节.
+    \begin{theorem}[Poincaré 回归定理]
+        设 $T$ 是概率空间 $(X,\mu)$ 的保测变换，$A\subset X$ 是可测集，则 $\forall\; N>0$，有 $\mu(\{x\in A\mid {\{T^n(x)\}}_{n\geq N}\subset X\setminus A\})=0$.
+    \end{theorem}
+    \begin{proof}
+        只需证 $N=1$ 情形（为什么？考虑 $T^k(A)$）. 考察集合 $\tilde{A}=\{x\in A\mid {\{T^n(x)\}}_{n\geq 1}\subset X\setminus A\}=A\cap (\bigcap\limits_{n=1}^{\infty} T^{-n}(X\setminus A))$（于是 $\tilde{A}$ 可测），由于 $T^{-n}(\tilde{A})\cap \tilde{A}=\emptyset$ 对所有 $n$ 成立，则 $T^{-n}(\tilde{A})\cap T^{-m}(A)=\emptyset$ 对所有 $m,n$ 成立. 又由于 $\mu(T^{-n}(\tilde{A}))=\mu(\tilde{A})$，则 $1=\mu(X)\geq \sum\limits_{n=0}^{\infty} \mu(T^{-n}(\tilde{A})) = \sum\limits_{n=0}^{\infty} \mu(\tilde{A})$，从而 $\mu(\tilde{A})=0$.
+    \end{proof}
+    \begin{remark}
+        定理说明几乎所有 $A$ 中的点都会无穷次回到 $A$.
+    \end{remark}
+
+    为了给本段多凑点字数，我们介绍与拓扑共轭相似的共轭概念：度量同构.
+    \begin{definition}[度量同构]
+        设 $T_i$ 是概率空间 $(X_i, \mu_i)$ 的保测变换，$i=1,2$，如果存在一个同构（a.e. 单射）$\phi:X_1\to X_2$ 使得 $T_2\circ \phi=\phi\circ T_1$ 且推前测度 $(\phi_*\mu_1)(A)=\mu_1(\phi^{-1}(A))=\mu_2(A)$ 对所有 $A\subset X_2$ 成立（$\phi$ 此时称为保测变换），则称 $T_1$ 与 $T_2$ 度量同构. 若其他条件都满足，但 $R$ 不是单射，则称 $S$ 是 $T$ 的一个度量因子.
+    \end{definition}
+
+    \section{Birkhoff 遍历定理}
+    注~\ref{注2.3} 中实际上可以看出一些时间平均与“空间平均”的对应性，Birkhoff 遍历定理则是这一对应性的正式表述：
+    \begin{theorem}[Birkhoff 遍历定理]\label{定理4.1}
+        设 $T$ 是概率空间 $(X,\mu)$ 的保测变换，$\varphi\in L^1(X,\mu)$，则对于 $\mu$-几乎所有 $x\in X$，时间平均 $\varphi_T(x)=I_x(\varphi)=\lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(T^k(x))$ 都良定义，且 $\int_{X} \varphi d\mu=\int_{X} \varphi_T d\mu$.
+    \end{theorem}
+    \begin{remark}
+        虽然这是遍历论一个几乎是基石性的定理，但和其他的基石不同，这个定理的证明非常困难，且涉及大量实分析的知识，而且证明的过程对遍历论本身的研究没有很高的启发性，因此不要求掌握. 另外应当提到的是，我们并没有要求 $X$ 有任何测度之外的性质.
+    \end{remark}
+    \begin{proof}[定理~\ref{定理4.1} 的证明]
+        设 $s_n(x)=s_{n,\varphi}(x)=\sum\limits_{k=0}^{n-1}\varphi(T^k(x))$（$n=0$ 时恒为 $0$），$A=A_{\varphi}=\{x\in X\mid \sup\limits_{n\geq 0}s_n(x)>0\}$，则我们首先断言 $\int_{A}\varphi(x)d\mu\geq 0$. 我们知道 $s_k(Tx)=s_{k+1}(x)-\varphi(x)$，两边对 $0\leq k\leq n-1$ 取最大值，则 $\max\limits_{0\leq k\leq n}s_k(Tx)=\max\limits_{0\leq k\leq n}\sum\limits_{i=0}^{k}\varphi(T^i x)-\varphi(x)=:\Phi_{n+1}^*(x)-\varphi(x)$，而 $\max\limits_{0\leq k\leq n}(s_{k+1}(x)-\varphi(x))=\max(0,\max\limits_{0<k\leq n}\sum\limits_{i=1}^{k}\varphi(T^i x))=:\Phi_n(Tx)$，则 $\varphi(x)=\Phi_{n+1}^*(x)-\Phi_n(Tx)\geq \Phi_n^*(x)-\Phi_n(Tx)$. 注意到其实记号 $\Phi_n(x)=\max(0,s_1(x),\ldots,s_n(x)),\; \Phi_n^*(x)=\max(s_1(x),\ldots,s_n(x))$. 记 $A_n=\{x\in X\mid \Phi_n(x)>0\}$，两边积分知 $\int_{A_n}\varphi(x)d\mu\geq \int_{A_n}\Phi_n^*(x)d\mu-\int_{A_n}\Phi_n(Tx)d\mu$. 但在 $A_n$ 内 $\Phi_n^*=\Phi_n$，在 $A_n$ 外 $\Phi_n=0$，则 $\int_{A_n}\Phi_n^*(x)d\mu=\int_X \Phi_n(x)d\mu$；对 $\Phi_n(Tx)$ 项也放缩（恒非负），则 $\int_{A_n}\varphi(x)d\mu\geq \int_{X}\Phi_n(x)d\mu-\int_{X}\Phi_n(Tx)d\mu=0$ 由于 $T$ 保测. 令 $n\to\infty$ 则 $A=\bigcup\limits_{n=1}^{\infty}A_n$，即证.
+
+        设 $E_{a,b}=\{x\in X\mid \varliminf\limits_{n\to\infty}\frac{s_n(x)}{n}<a<b<\varlimsup\limits_{n\to\infty}\frac{s_n(x)}{n}\}$，对于极限 a.e. 存在的命题，我们只需证明对所有 $a,b\in \R$ 有 $\mu(E_{a,b})=0$（为什么？）. 我们任取 $a,b$，设 $E=E_{a,b}$，设 $g(x)=\begin{cases}
+            \varphi(x)-b,&x\in E,\\
+            0,&x\notin E,\\
+        \end{cases}$ 则由断言知 $\int_{A_g}g(x)d\mu\geq 0$. 而 $A_g=\{x\in X\mid \sup\limits_{n\geq 1}\frac{1}{n}s_{n,\varphi}(x)>b\}$（为什么？），则 $A(g)\supset E$. 由于 $T(E)=E$（为什么？），则任意 $x\notin E, n\in\N$ 都有 $s_{n,g}(x)\equiv 0$，则 $A_g\subset E$. 于是 $A_g=E$，则 $\int_{E}\varphi(x)d\mu\geq b\mu(E)$. 同理考虑 $G(x)=\begin{cases}
+            a-\varphi(x),&x\in E,\\
+            0,&x\notin E,\\
+        \end{cases}$ 则 $\int_{E}\varphi(x)d\mu\leq a\mu(E)$（请验证）. 但是 $a<b$，则只能 $\mu(E)=0$.
+
+        在证明积分相等之前，我们首先要证明 $\varphi_T\in L^1$，否则积分没有意义. 由于 $\int_{X}\abs{\frac{s_{n,\varphi}(x)}{n}}d\mu\leq\frac{1}{n}\int_{X}\sum\limits_{k=0}^{n-1}\abs{\varphi(T^k x)}d\mu=\int_{M}\abs{\varphi(x)}d\mu=\norm{\varphi}_1$ 有界，则由 Fatou 引理知 $\int_{X}\abs{\varphi_T} d\mu<\infty$.
+
+        最后证明积分相等，为此我们记 $C_{a,b}=\{x\in X\mid a<\varphi_T(x)<b\}$，于是考虑 $g(x)=\begin{cases}
+            \varphi(x)-a,&x\in C_{a,b},\\
+            0,&x\notin C_{a,b},\\
+        \end{cases}$ 则 $\int_{C_{a,b}}\varphi d\mu\geq a\mu(C_{a,b})$，同理 $\int_{C_{a,b}}\varphi d\mu\leq b\mu(C_{a,b})$. 而显然 $a\mu(C_{a,b})\leq \int_{C_{a,b}}\varphi_T d\mu \leq b\mu(C_{a,b})$，则 $\abs{\int_{C_{a,b}}\varphi_T d\mu-\int_{C_{a,b}}f\mu}\leq (b-a)\mu(C_{a,b})$. 在进行最后的估计前，我们再注意一件事：$\{y\in\R\mid \mu(\{x\mid f(x)=y\})>0\}$ 至多可数（可数集的可数并可数），因此我们可以找到一列 $\{\varepsilon_n\}\nsubseteq Y$ 且 $\lim\limits_{n\to\infty}\varepsilon_n=0$. 于是
+        \begin{equation*}
+            \begin{aligned}
+                &\abs{\int_{M}\varphi_T d\mu-\int_{M}\varphi d\mu}\\
+                \leq&\sum\limits_{p=-\infty}^{\infty}\abs{\int_{C_{p\varepsilon_n,(p+1)\varepsilon_n}}\varphi_T d\mu-\int_{C_{p\varepsilon_n,(p+1)\varepsilon_n}}\varphi d\mu}\\
+                \leq&\varepsilon_n\sum\limits_{p=-\infty}^{\infty}\mu(C_{p\varepsilon_n,(p+1)\varepsilon_n})\\
+                =&\varepsilon_n\\
+            \end{aligned}
+        \end{equation*}
+        令 $n\to\infty$ 即证.
+    \end{proof}
+    \begin{remark}
+        \begin{itemize}
+            \item 积分相等的式子对于 $X$ 的 a.e. 不变可测子集也成立（直接换研究的空间即可）.
+            \item 若 $T$ 可逆，则对逆也有时间平均 $\overline{\varphi}_T$，并且所有结论都相同. 进一步的，我们有：
+        \end{itemize}
+    \end{remark}
+    \begin{proposition}
+        $\varphi_T=\overline{\varphi}_T$ a.e. 成立.
+    \end{proposition}
+    \begin{proof}
+        反证法，则 $\exists\; \varepsilon>0$ 以及正测度集 $E=\{x\in X\mid\varphi_T(x)>\overline{\varphi}_T(x)+\varepsilon\}$（或者 $\varphi_T(x)<\overline{\varphi}_T(x)-\varepsilon$，完全同理）. 由于 $\varphi_T\circ T=\varphi_T$（注~\ref{注2.3}；$\overline{\varphi}$ 亦如此），则 $T(E)\subset E$，于是由 $T$ 保测知 $T(E)\stackrel{a.e.}{=}E$，则 $\int_{E}\varphi_T d\mu=\int_{E}\varphi d\mu=\int_{E}\overline{\varphi}_T d\mu$，与不等式两边积分得到的式子相矛盾.
+    \end{proof}
+
+    结合 K-B 定理~\ref{定理2.4} 的证明与 Birkhoff 定理~\ref{定理4.1} 的结论，我们还可以得到更强的推论：
+
+    \begin{corollary}
+        设 $X$ 是紧度量空间，$f:X\to X$ 是连续函数，$A$ 是 $I_x(\varphi)$ 对所有 $\varphi\in C(X)$ 都良定义的 $x$ 组成的集合，则对任何 $f$-不变的 Borel 概率测度 $\mu$，都有 $\mu(A)=1$. 若 $f$ 还是个同胚，则对 $f^{-1}$ 也成立，而且 $I_{x,f}(\varphi)=I_{x,f^{-1}}(\varphi)$ 成立的 $x$ 组成的集合也是满测度（仍然取 $f$-不变 Borel 概率测度）. 特别的，既然是满测度（从而非空），于是的确存在 $I_x(\varphi)$ 良定义的 $x$.
+    \end{corollary}
+
+\end{document}
