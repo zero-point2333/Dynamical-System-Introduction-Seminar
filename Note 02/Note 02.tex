@@ -198,4 +198,22 @@
         事实上，在第 01 讲中，我们已经使用了 Markov 分割来解决均匀扩张映射的问题. 请理解为什么三进制小数是一种 Markov 分割.
     \end{remark}
 
+    \begin{remark}
+        采用连分数形式，我们也可以为小数建立符号动力系统的对应. 有关连分数的内容相当复杂，例如，其中一部分内容可以用热力学形式描述.
+    \end{remark}
+
+    \begin{theorem}[扩张映射的拓扑共轭]
+        所有度数（拓扑度数）为 $k$ 的圆上的扩张映射 $f$（也即 $\exists\; \mu>1$ 使得 $\abs{f'}\geq\mu$；由紧性知等价于 $\abs{f'}>1$）都与 $E_k$ 拓扑共轭.
+    \end{theorem}
+    \begin{proof}
+        不妨设 $k>1$. 首先我们容易证明：$f$ 存在 $\R\to \R$ 的提升 $F$，且 $F$ 的不动点 $p\in [-\frac{1}{2},\frac{1}{2}]$. 接下来记 $\Delta_n^m=[\frac{m}{k^n},\frac{m+1}{k^n}],\; n\in\Z_{\geq 0},0\leq m\leq k^n-1$，于是 $E_k\Delta_n^m=\Delta_{n-1}^{m'}$，其中 $m'=m\% k^{n-1}$. 记 $\xi_n=\{\Delta_n^0,\ldots,\Delta_n^{k^n-1}\}$ 是 $S^1$ 的分割；我们的目的是构造 $f$ 的分割 $\eta_n=\{\Gamma_n^0,\ldots,\Gamma_n^{k^n-1}\}$，并通过两列分割的对应最后给出点的对应.
+
+        首先构造 $\eta_1$，这里只需取 $\Gamma_1^{t}=\pi(F^{-1}([p+t,p+t+1]))$，其中 $\pi$ 是 $\R\to \R/\Z$ 的商映射. 设 $a_1^t=F^{-1}(p+t)$，于是归纳定义 $a_n^{km+i}$（$0\leq m\leq k^{n-1}-1$ 且 $0\leq i<k$） 满足 $a_{n-1}^m\leq a_n^{km+i}<a_{n-1}^{m+1}$ 且 $\pi(F(a_n^{km+i}))=\pi(a_{n-1}^{m'})$，定义 $\Gamma_n^m=\pi([a_n^m,a_n^{m+1}])$，于是 $f(\Gamma_n^m)=\Gamma_{n-1}^{m\% k^{n-1}}$，而 $f(\Gamma_1^m)=S^1=\Gamma_0^0$. 由于 $f$ 的严格单调性，$f^n$ 在 $\Gamma_n^m$ 内部是单射，于是由于 $f$ 的扩张性知 $\abs{\Gamma_n^m}\leq \mu^{-n}$，于是 $\{a_n^m\}$ 点列稠密（扩张条件的唯一作用就是直接保证了点列的稠密性）.
+
+        最后，设 $h(a_n^m)=\frac{m}{k^n}$，这一对应是单调的，且由于点列 $\{a_n^m\}$ 的稠密性，这一对应可以唯一连续延拓为 $h:[p,p+1]\to [0,1]$ 且严格单调（因此是同胚），由于 $h(p)=h(p+1)$，$h$ 可以视为 $S^1\to S^1$ 的函数，于是 $E_k\circ h=h\circ f$.
+    \end{proof}
+    \begin{remark}
+        事实上，$E_k$ 的扰动具有 $C^0$ 强结构稳定性（定义见 Note 03）.
+    \end{remark}
+
 \end{document}
