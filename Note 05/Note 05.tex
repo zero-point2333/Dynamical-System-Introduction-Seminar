@@ -1,0 +1,454 @@
+\documentclass[11pt, a4paper, oneside]{ctexart}
+\usepackage{indentfirst, amsmath, amsthm, amssymb, graphicx, float, subfigure, geometry, setspace, xfrac, tikz-cd, enumerate}
+\usepackage[bookmarks=true, colorlinks, citecolor=blue, linkcolor=black]{hyperref}
+\ctexset{
+    section = {
+        format = {\Large\bfseries},
+    }
+}
+
+% 导言区
+
+\title{Note 05}
+\author{zero-point\_}
+\setlength{\parindent}{4ex}
+\pagestyle{plain}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+\setstretch{1.5}
+
+\newtheorem{theorem}{定理}[section]
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{remark}[theorem]{注}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fC}{\mathfrak{C}}
+\newcommand{\fE}{\mathfrak{E}}
+\newcommand{\fR}{\mathfrak{R}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\re}{\mathrm{Re}}
+\newcommand{\supp}{\mathrm{supp}}
+\renewcommand{\top}{\mathrm{top}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\norm}[1]{\left\Vert{#1}\right\Vert}
+\renewcommand{\v}[1]{\mathbf{#1}}
+
+\begin{document}
+	\maketitle
+    \section{内容安排}
+    \begin{itemize}
+        \item 遍历性与唯一遍历性
+        \item 混合性与弱混合性
+    \end{itemize}
+
+    \section{遍历性}
+    \begin{definition}[严格不变集]
+        设 $f:X\to X,\; A\subset X$，若 $f^{-1}(A)=A$，则称 $A$ 是 $f$-严格不变集.
+    \end{definition}
+    \begin{remark}
+        \begin{itemize}
+            \item 显然严格不变集是不变集.
+            \item $f$-严格不变集 $A$ 满足性质 $\chi_A\circ f=\chi_A$，也即 $\chi_A$ 是 $f$-不变函数.
+        \end{itemize}
+    \end{remark}
+
+    \begin{definition}[遍历性~\uppercase\expandafter{\romannumeral1}]
+        设 $\mu$ 是函数 $f:X\to X$ 的不变测度，称其对于 $f$ 是遍历的，若任意可测 $f$-严格不变集 $A\subset X$ 都必须有 $\mu(A)=0$ 或 $\mu(X\setminus A)=0$.
+    \end{definition}
+    \begin{remark}
+        若引入 a.e. $f$-严格不变集的概念，也即 $\mu(A\triangle f^{-1}(A))=0$（$\triangle$ 是对称差），则由此得到的遍历性定义与原定义一致（这里提供证明框架，细节自行补充：对于困难的严格 $\Rightarrow$ a.e. 严格方向，我们归纳证明对于 a.e. 严格不变集 $A$ 有 $\mu(f^{-n}(A)\triangle A)=0$，于是 $A^*=\varlimsup\limits_{n\to\infty}f^{-n}(A)$ 是严格 $f$-不变集且 $\mu(A\triangle A^*)=0$）.
+    \end{remark}
+
+    \begin{definition}[唯一遍历性]
+        设底空间 $X$ 是紧度量空间，$f:X\to X$ 连续，若 $f$ 只有一个不变 Borel 概率测度，则称 $f$ 唯一遍历.
+    \end{definition}
+    \begin{remark}
+        紧度量空间保证了至少有一个这样的测度，而唯一遍历性说明这样的测度只有一个.
+    \end{remark}
+    \begin{proposition}
+        $f$ 唯一遍历时，对应的不变 Borel 概率测度 $\mu$ 是对于 $f$ 遍历的.
+    \end{proposition}
+    \begin{proof}
+        反证法，若 $\mu$ 不遍历则可以找到不变集 $A\subset X$ 且 $0<\mu(A)<1$. 给定正测度集 $A$ 时，可以定义条件测度 $\mu_A(B)=\frac{\mu(B\cap A)}{\mu(A)}$，则在此时 $\mu_A,\mu_{X\setminus A}$ 都是 $f$-不变测度，且二者互不相同，从而破坏了唯一遍历性.
+    \end{proof}
+
+    遍历性也可以类似的，固定测度而从函数角度定义.
+    \begin{definition}[遍历性~\uppercase\expandafter{\romannumeral2}]
+        给定有限测度空间 $(X,\mu)$，$f:X\to X$ 保测，若任意可测的 $f$-不变的实值函数 $\varphi$ 都 a.e. 为常值，则称 $f$ 是遍历的.
+    \end{definition}
+    \begin{remark}
+        请自行证明：
+        \begin{itemize}
+            \item 两种遍历性的定义等价；
+            \item 将此定义中的 $f$-不变函数改为 a.e. $f$-不变函数（也即 $\mu(\{x\in X\mid \varphi(f(x))\neq \varphi(x)\})=0$），则与原定义等价.
+        \end{itemize}
+
+        另外，请找到紧度量空间上的压缩映射的遍历测度.
+    \end{remark}
+
+    \begin{corollary}
+        设 $(X,\mu)$ 是概率测度空间，$f:X\to X$ 是保测遍历变换，任取 $\varphi\in L^1(X,\mu)$，则关于时空平均的下式 a.e. 成立：$\varphi_f(x)=\lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))=\int_{X}\varphi d\mu$.
+    \end{corollary}
+    \begin{proof}
+        只需注意到 $\varphi_f$ 是 $f$-不变函数，则它 a.e. 是常值，而由 Birkhoff 遍历定理，常值就是 $\int_{X}\varphi_f d\mu=\int_{X}\varphi d\mu$.
+    \end{proof}
+
+    遍历性既然有如此良好的性质，那能否做到人手一个遍历测度呢？以下我们将进行简单的泛函分析来说明这一点是可以做到的.
+
+    \begin{proposition}\label{命题2.11}
+        给定紧度量空间 $X$，变换 $f:X\to X$，定义 $\fR(f)$ 是所有 $f$-不变 Borel 概率测度组成的集合，则 $\fR(f)$ 是弱*闭凸集.
+    \end{proposition}
+    \begin{remark}
+        首先我们提到，由于 K-B 定理，$\fR(f)$ 非空. 我们知道紧度量空间 $X$ 上的连续函数族 $C(X)$ 可分，且由 Riesz 表示定理，${C(X)}^*$ 等距同构于 Borel 符号测度集 $\cM(X)$，其上的范数 $\norm{\mu}=\abs{\mu}(X)=\sup\limits_{{\{E_j\}}_{j\geq 1}}\abs{\mu(E_j)}$ 构成 Banach 空间，因此概率测度空间 $\fR=\{\mu\in \cM(X)\mid \norm{\mu}=1;\; \forall\; A\subset X,\; \mu(A)\geq 0\}$ 是有界弱*闭集，从而是弱*紧集. 于是 $\fR(f)\subset \fR$ 也是弱*紧集. $\fR$ 事实上也是凸集.
+    \end{remark}
+    \begin{proof}[命题~\ref{命题2.11} 的证明]
+        凸集显然；弱*闭集只需考虑 $\int_{X}\varphi d\mu_n=\int_{X}\varphi\circ f d\mu_n$ 两边取 $n\to\infty$ 即知.
+    \end{proof}
+
+    \begin{definition}[凸集的极点]
+        设 $x\in E$，$E$ 是凸集，称 $x$ 是 $E$ 的极点，若 $x$ 的任意凸组合 $x=\lambda x_1+(1-\lambda)x_2,\;\lambda\in [0,1],\; x_1,x_2\in E$ 都有 $x_1\neq x_2\Rightarrow \lambda\in\{0,1\}$.
+    \end{definition}
+
+    \begin{lemma}[极点与遍历性]
+        $\mu\in\fR(f)$ 是其极点当且仅当它是 $f$-遍历测度.
+    \end{lemma}
+    \begin{proof}
+        $\Rightarrow$：反证法，设 $A$ 是 $f$-不变集且 $0<\mu(A)<1$，则 $\mu=\mu(A)\mu_A+(1-\mu(A))\mu_{X\setminus A}$，从而 $\mu$ 不是 $\fR(f)$ 中的极点.
+
+        $\Leftarrow$：取遍历测度 $\mu$ 及其凸组合 $\mu=\lambda \mu_1+(1-\lambda)\mu_2,\lambda\in (0,1)$，则由遍历定义易证 $\mu_1,\mu_2$ 也都遍历（更进一步的，$\mu$ 的零测和全测集分别都是 $\mu_1,\mu_2$ 的零测和全测集）. 接下来任取 $\varphi\in C(X)$，我们要证 $\mu_1=\mu_2=\mu$，由对称性只需证 $\int_{X}\varphi d\mu=\int_{X}\varphi d\mu_1$，而这只需证时间平均积分 $\int_{X}\varphi_f d\mu=\int_{X}\varphi_f d\mu_1$，而由于 $\varphi_f$ 是 $f$-不变函数，则它相对于 $\mu$ 和 $\mu_1$ 都 a.e. 是常数 $C,C_1$，则我们只需证 $C=C_1$. 取 $B\subset X$ 使得 $\mu(B)=1$ 且 $B$ 上 $\varphi_f\equiv C$，则 $\mu_1(B)=1$，从而 $X$ 上 $\varphi_f$ 相对于 $\mu_1$ 也 a.e. 恒为 $C$，从而必有 $C=C_1$.
+    \end{proof}
+
+    \begin{theorem}[遍历测度存在性]
+        紧度量空间 $X$ 上的连续变换 $f$ 存在一个遍历的不变 Borel 概率测度.
+    \end{theorem}
+    \begin{proof}
+        设 $\{\varphi_i\}$ 是 $C(X)$ 上的可数稠密集，设 $\fR_0=\fR(f)$，设 $\fR_i=\{\mu\in\fR_{i-1}\mid \int_{X}\varphi_i d\mu=\max\limits_{\nu\in\fR_{i-1}}\int\varphi_i d\nu\}$（请验证每个 $\fR_i$ 非空弱*紧凸），于是 $\fC=\bigcap\limits_{i=0}^{\infty}\fR_i$ 非空. 任取 $\mu\in\fC$，我们只需验证它是极点. 设 $\mu=\lambda\mu_1+(1-\lambda)\mu_2$，其中 $\mu_1\neq \mu_2\in\fR(f)$，反证法设 $\lambda\in (0,1)$，则由 $\fR_i$ 的定义归纳知 $\int \varphi_i d\mu_1=\int\varphi_i d\mu_2=\int\varphi_i d\mu$，则亦有 $\mu_1,\mu_2\in \fR_i$. 由于 $\{\varphi_i\}$ 稠密，则 $\int\varphi d\mu_1=\int\varphi d\mu_2$，而由 Riesz 表示定理的唯一性部分知 $\mu_1=\mu_2$，矛盾.
+    \end{proof}
+
+    对于一般的不变测度，我们可以将其分解为若干遍历测度的“求和”，但在表述这一定理前，我们先不加证明地引入几个前置概念和定理.
+    \begin{definition}[Lebesgue 空间]
+        一个概率测度空间 $(A,\mu)$ 称为 Lebesgue 空间，若其与一个具有如下性质的概率测度空间 $(X,m)$ 测度同构（可测集之间存在一一对应，且在各自测度下的测度值相等）：$X$ 是若干带有标准 Lebesgue 测度的区间 $[0,\varepsilon],\varepsilon\in (0,1)$（连续部分）和正测度孤立点的无交并.
+    \end{definition}
+
+    \begin{theorem}[Choquet 定理]
+        给定局部凸拓扑向量空间 $X$，紧的可度量化的凸集 $C\subset X$，点 $x\in C$. 则存在 $C$ 的极点集 $\fE(C)$ 上的概率测度 $\mu$，使得 $x=\int_{\fE(C)} zd\mu(z)$.
+    \end{theorem}
+
+    \begin{theorem}[遍历分解定理]\label{定理2.18}
+        给定紧度量空间 $X$，连续变换 $f:X\to X$ 以及其不变 Borel 概率测度 $\mu$，则 $\mu$ 可以被分解为“积分的积分”：存在 Lebesgue 空间 $A$，以及 $X$ 的不变子集分割 ${\{X_{\alpha}\}}_{\alpha\in A}$（不考虑零测部分，也即 $\mu(X\setminus\bigcup\limits_{\alpha\in A}X_{\alpha})=0$；这里我们可以使得 $X_{\alpha}\cap X_{\beta}=\emptyset \; \forall\; \alpha\neq \beta\in A$），每个 $X_{\alpha}$ 内都由一个 $f$-不变的遍历测度 $\mu_{\alpha}$，使得任意可积函数 $\varphi$ 都有 $\int\varphi d\mu=\iint \varphi d\mu_{\alpha}d\alpha$.
+    \end{theorem}
+    \begin{proof}
+        尽管我们已跳过了 Choquet 定理的证明，我们仍然需要直接承认指标集 $A$ 是 Lebesgue 空间，而这是一个很不显然的结论.
+
+        另外我们要验证 $X_{\alpha}$ 的确是不变集且构成了分割（模零测意义下），这里取 $X_{\alpha}$ 为使得 $\mu_{\alpha}(X_{\alpha})=1$ 的最小可测集. 由 Birkhoff 遍历定理，可以设 $X^*$ 是所有时间平均极限存在的点，则 $\mu(X^*)=1$. 接下来，$x\in X^*$ 中的点由于 Riesz 表示定理，$\varphi_T(x)=I_x(\varphi)$ 可以视为 ${C(X)}^*$ 中的元素（相对于 $\varphi$），则其唯一对应一个 Borel 概率测度 $\mu_x$，且任意 $f$-严格不变集都是若干双向轨道的并，因此要么包含 $x$ 的双向轨道（从而包含其正向轨道 $\cO_f^+(x)$），要么不包含，于是要么测度为 $0$，要么为 $1$，从而 $\mu_x$ 是一个遍历测度，从而 $\mu_x$ 是极点. 最后定义等价关系 $x\sim y$ 当且仅当 $\mu_x=\mu_y$，则的确给出了分割，而且这一分割与 $X_{\alpha}$ 的定义也相合.
+    \end{proof}
+
+    接下来，我们分析唯一遍历性的若干性质与判定，并简单介绍支撑集的概念.
+
+    \begin{corollary}\label{推论2.19}
+        设底空间 $X$ 是紧度量空间，$f:X\to X$ 连续，则 $f$ 是唯一遍历的当且仅当 $f$ 只有一个不变遍历 Borel 概率测度.
+    \end{corollary}
+    \begin{proof}
+        $\Rightarrow$ 显然；对 $\Leftarrow$ 方向，我们知道 $f$ 有一个不变遍历 Borel 概率测度 $\mu$. 反证法，设还有一个不变 Borel 概率测度 $\nu\neq \mu$，于是对 $\nu$ 进行遍历分解，则可以分解为 Lebesgue 空间上若干遍历测度的积分. 若这些遍历测度都是 $\mu$，则 $\nu=\mu$，与反证法假设矛盾；于是存在非 $\mu$ 的遍历测度，与条件矛盾.
+    \end{proof}
+
+    \begin{proposition}
+        若 $f:X\to X$ 是紧度量概率测度空间上的唯一遍历的连续函数，则任意 $\varphi\in C(X)$，时间平均 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))$ 一致收敛.
+    \end{proposition}
+    \begin{proof}
+        证逆否命题. 存在 $a<b$ 以及两列点 $\{x_k\},\{y_k\}$ 以及 $\{n_k\}\to \infty$ 使得 $\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\varphi(f^l(x_k))<a$ 且 $\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\varphi(f^l(y_k))>b$. 通过 K-B 定理的证明过程（主要是对角线论述），我们可以选出子列 $\{n_{k_j}\}$（以下为方便表述，直接称为 $\{n_k\}$），使得 $J_1(\psi)=\lim\limits_{k\to\infty}\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\psi(f^l(x_k))$ 和 $J_2(\psi)=\lim\limits_{k\to\infty}\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\psi(f^l(y_k))$ 都是 $C(X)$ 上的有界线性泛函，且 $f$-不变，且当 $\psi\geq 0$ 时 $J_1,J_2\geq 0$，于是由 Riesz 表示定理，可以分别对应两个符号测度 $\mu_1,\mu_2$，而且它们都是 $f$-不变的正测度. 由于 $J_1(\varphi)\leq a<b\leq J_2(\varphi)$，则 $\mu_1\neq \mu_2$，于是 $f$ 不是唯一遍历的.
+    \end{proof}
+
+    其逆命题不一定对，但加条件后就对了：
+    
+    \begin{proposition}[唯一遍历性判定~\uppercase\expandafter{\romannumeral1}]
+        给定紧度量空间 $X$ 和连续函数 $f:X\to X$，选取 $C(X)$ 的稠密子集 $\Phi$，若任意 $\varphi\in\Phi$，其时间平均 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))$ 一致收敛到常数，则 $f$ 唯一遍历.
+    \end{proposition}
+    \begin{proof}
+        通过模仿 K-B 定理的证明过程，我们知道这时任意 $\varphi\in C(X)$ 的时间平均 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))$ 都会一致收敛到常数.
+
+        设 $\mu,\nu$ 是遍历不变测度，则 $\int_{X}\varphi d\nu=\int_{X}\varphi_T d\nu=\varphi_T\int_{X}d\nu=\varphi_T=\cdots=\int_{X}\varphi d\mu$，于是 $\nu=\mu$，由推论~\ref{推论2.19} 即证唯一遍历性.
+    \end{proof}
+
+    \begin{corollary}[唯一遍历性判定~\uppercase\expandafter{\romannumeral2}]
+        条件同上，若任意 $\varphi\in \Phi$，其时间平均 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))$ 一致收敛，且 $f$ 拓扑传递，则 $f$ 唯一遍历.
+    \end{corollary}
+    \begin{proof}
+        取 $x$ 使得 $\overline{\cO_f(x)}=X$，则 $I_x$ 由 Riesz 表示定理知唯一确定一个不变概率测度 $\mu$. 与定理~\ref{定理2.18} 的证明类似，可知它是遍历测度，且任意的 $\varphi\in C(X)$，$\varphi_T$ 在 $\cO_f(x)$ 上恒为常数. 由于其稠密性和 $\varphi_T$ 的连续性，$\varphi_T$ 在 $X$ 上恒为常数.
+    \end{proof}
+
+    \begin{corollary}
+        给定紧度量空间 $X$ 和唯一遍历连续函数 $f:X\to X$，设 $\mu$ 是对应的遍历测度. 任取 $U\subset X$ 是开集且 $\mu(\partial U)=0$. 则 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\chi_U(f^k(x))$ 一致收敛到 $\mu(U)$.
+    \end{corollary}
+    \begin{proof}
+        提示：取上、下的连续函数列逼近，注意零测集之可数并零测，以及注意哪个变量先固定住.
+    \end{proof}
+
+    \begin{definition}[支撑集]
+        设 $X$ 是可分度量空间，$\mu$ 是 Borel 测度，定义支撑集 $\supp(\mu)=\{x\in X\mid \mu(U)>0,\; \forall\; U\;\text{是}\;x\;\text{的开邻域}\}$.
+    \end{definition}
+    \begin{remark}[支撑集基本性质]
+        \begin{itemize}
+            \item 支撑集是闭集.
+            \item 支撑集的补集测度为 $0$（使用可分性证明）.
+            \item 满测度集与支撑集的交在支撑集中稠密.
+        \end{itemize}
+    \end{remark}
+
+    接下来的性质，需要使用上次讲的 Poincaré 回归定理证明，由于篇幅所限而不列出证明了. 值得指出的是，这些性质可以很好地说明遍历性的“遍历”是怎么来的，而且也是与拓扑动力系统的一座桥梁.
+
+    \begin{definition}[回归集]
+        $x\in X$ 称为正（负）回归的，若 $x\in \omega(x)$（或 $x\in\alpha(x)$）；$x\in X$ 称为回归的，若其既正回归又负回归. 记所有回归元素组成的集合为回归集 $R(f)$.
+    \end{definition}
+    \begin{definition}[极小集]
+        若 $A\subset X$ 是 $f$-不变集，且任意 $A_0\subset A$，若 $A_0$ 也是 $f$-不变集，则 $A_0\in\{\emptyset,A\}$，则称 $A$ 是极小集.
+    \end{definition}
+
+    \begin{proposition}
+        设 $X$ 是完备可分度量空间，$f:X\to X$ 是连续变换，则：
+        \begin{enumerate}
+            \item 任意不变 Borel 概率测度 $\mu$ 都有 $\supp(\mu)\subset R(f)$.
+            \item 若 $\mu$ 还是遍历的，则 $f\mid_{\supp(\mu)}$ 有一个稠密轨道（即其拓扑传递）.
+            \item 若 $X$ 还是紧的，$f\mid_{\supp(\mu)}$ 还是唯一遍历的，则 $\supp(\mu)$ 是极小集.
+        \end{enumerate}
+    \end{proposition}
+
+    对于流，我们可以完全类似地将这套理论迁移过去.
+
+    本节最后，我们验证此前遇到的部分例子的遍历性.
+
+    \begin{theorem}[Kronecker-Weyl 等分布定理]
+        无理旋转唯一遍历.
+    \end{theorem}
+    \begin{proof}
+        只需证明存在稠密集 $\Phi\subset C(S^1)$，使得 $\forall\; \varphi\in \Phi$，其时间平均都一致收敛到常数. 我们选择 $\Phi$ 是三角多项式；另外注意到“一致收敛到常数”的性质是线性的，于是只需考察其基 $\chi_m(x)=e^{2\pi imx}$，而 $\abs{\frac{1}{n}\sum\limits_{k=0}^{n-1}e^{2\pi im(x+k\alpha)}}\leq \frac{2}{n\abs{1-e^{2\pi im\alpha}}}\to 0$ 当 $n\to\infty$.
+    \end{proof}
+    \begin{remark}
+        \begin{itemize}
+            \item 容易证明，Lebesgue 测度是一个不变测度，从而是无理旋转唯一对应的测度.
+            \item 若考虑 $\T^n$ 上的三角多项式 $e^{2\pi i\sum\limits_{j=1}^{n}k_j x_j}$ 作为稠密集，则也可以证明 $\T^n$ 上的平移 $T_{\gamma}$ 当满足有理独立条件时唯一遍历，且以 Lebesgue 测度为不变测度.
+            \item 反过来，当 $1,\gamma_1,\ldots,\gamma_n$ 不有理独立时，设 $k^T\gamma=m\in\Z$，则定义 $\varphi(x)=k^T x$ 是 $\T^n\to \T^1$ 的函数，则其是 $T_{\gamma}$-不变函数，于是定义 $A_1=\varphi^{-1}(\{0\leq x<\frac{1}{2}\}),A_2=\varphi^{-1}(\{\frac{1}{2}\leq x<1\})$，则它们是不交的严格不变集，则定义 $\mu_1,\mu_2$ 是 Lebesgue 测度相对 $A_1,A_2$ 的条件测度，它们是不同的不变概率测度；我们也可以非构造性地证明存在性，为此只需证明 Lebesgue 测度是不变测度但不是遍历测度（为什么？）.
+        \end{itemize}
+    \end{remark}
+
+    接下来的定理涉及拓扑群的 Haar 测度（平移不变测度；如 $\T^n$ 上的 Lebesgue 测度），这里仅列出陈述而不证明.
+    \begin{proposition}
+        给定紧的可度量化的 Abelian 拓扑群 $G$，若左平移 $L_{g_0}$ 相对 Haar 测度 $\lambda_G$ 遍历，则其唯一遍历.
+    \end{proposition}
+
+    非遍历的测度是可以构造的，但相对比较复杂，这里不展开，可以看 Katok 教材 pp. 150.
+
+    \begin{proposition}[均匀扩张映射]
+        圆上的均匀扩张映射 $E_m,\; \abs{m}\geq 2$ 相对 Lebesgue 测度遍历.
+    \end{proposition}
+    \begin{proof}
+        首先容易证明 $E_m$ 是保测的. 任取可测有界 $L^2\cap L^1$ 不变函数 $\varphi$（通过 $\arctan$ 之类的手法，我们可以将任意可测函数转化为有界函数，且其不变性与原函数的不变性相互等价；$S^1$ 上有界蕴含了 $L^k,\forall\; k\geq 1$），我们考虑 Fourier 级数 $\Phi(x)=\sum\limits_{k=-\infty}^{\infty}\varphi_k e^{2\pi ikx}$（由于 $L^2$ 收敛到 $\varphi$，则 a.e. 收敛），则对应 $\varphi\circ E_m$ 的 Fourier 级数是 $\sum\limits_{k=-\infty}^{\infty}\varphi_k e^{2\pi ikmx}$，于是由于 Fourier 级数的唯一性知 $\varphi_k=\varphi_{mk}$. 由 Riemann-Lebesgue 引理我们知道 $\abs{\varphi_k}\stackrel{k\to\infty}{\to}0$，则只能 $\varphi_k=0$ 对 $k\neq 0$，于是 $\Phi$ 是常数，则 a.e. $\varphi=\Phi$ 是常数.
+    \end{proof}
+
+    \section{混合性}
+    之前我们看到，平移是拓扑传递而不拓扑混合的，扩张是拓扑混合的. 如果将拓扑传递类比到遍历，那么是否有概念可以与拓扑混合进行类比呢？答案是肯定的：
+    \begin{definition}[混合性]
+        设 $T:X\to X$ 是概率测度空间上的保测变换. 若 $T$ 满足：任取 $A,B\subset X$ 是可测的，都有 $\lim\limits_{n\to\infty}\mu(T^{-n}(A)\cap B)=\mu(A)\mu(B)$，则称 $T$ 是混合的.
+    \end{definition}
+    \begin{remark}
+        \begin{itemize}
+            \item 请证明混合性蕴含遍历性.
+            \item 请证明混合性蕴含 $f\mid_{\supp(\mu)}$ 的拓扑混合性.
+        \end{itemize}
+    \end{remark}
+
+    \begin{definition}[稠密、充分族]
+        测度空间 $(X,\mu)$ 上的可测集族 $\fA$ 称为稠密族，若任取可测集 $A$ 和 $\varepsilon>0$，都存在 $A_0\in\fA$ 使得对称差的测度 $\mu(A\triangle A_0)<\varepsilon$. 可测集族 $\fC$ 称为充分族，若由它的任意有限无交并组成的集族是稠密族.
+    \end{definition}
+
+    \begin{proposition}
+        混合性只需对充分族中的集合进行验证.
+    \end{proposition}
+    \begin{proof}
+        设 $\fC$ 是充分族，则其形成的稠密族 $\fA$ 中，任取集合 $A,B$ 并分别表示为 $\bigcup\limits_{i=1}^{m}A_i,\bigcup\limits_{i=1}^{n}B_i$，其中 $A_i\in\fC$ 之间互不相交，$B_i\in\fC$ 之间也互不相交. 于是 $\mu(T^{-n}(A)\cap B)=\sum\limits_{i=1}^{m}\sum\limits_{j=1}^{n}\mu(T^{-n}(A_i)\cap B_j)\stackrel{n\to\infty}{\to}\sum\limits_{i=1}^{m}\sum\limits_{j=1}^{n}\mu(A_i)\mu(B_j)=\mu(A)\mu(B)$，则我们对稠密族进行了混合性的验证.
+
+        接下来任取 $A,B$ 是可测集，找到 $A',B'\in \fA$ 使得 $\mu(A\triangle A')<\varepsilon$ 和 $\mu(B\triangle B')<\varepsilon$，则由于 $\abs{\mu(A)-\mu(A')}\leq \mu(A\triangle A')$ 有 $\abs{\mu(T^{-n}(A)\cap B)-\mu(A)\mu(B)}\leq \mu(T^{-n}(A\triangle A')\cap B)+\mu(T^{-n}(A')\cap (B\triangle B'))+\mu(A)\mu(B\triangle B')+\mu(A\triangle A')\mu(B')+\abs{\mu(T^{-n}(A')\cap B')-\mu(A')\mu(B')}\leq 4\varepsilon+\abs{\mu(T^{-n}(A')\cap B')-\mu(A')\mu(B')}$，取 $n$ 足够大则 $<5\varepsilon$，则令 $\varepsilon\to 0$ 即证.
+    \end{proof}
+
+    \begin{theorem}
+        条件同上，任给 $L^2(X)$ 的一组 Schauder 基 $\Phi$，则 $T$ 混合当且仅当 $\forall\;\varphi,\psi\in\Phi$ 都有关联函数极限 $\lim\limits_{n\to\infty}\int_{X}(\varphi\circ T^n)\cdot \overline{\psi} d\mu=\int_{X}\varphi d\mu\int_{X}\overline{\psi} d\mu$.
+    \end{theorem}
+    \begin{proof}
+        首先显然，若 $\Phi$ 满足积分性质，则 $\Phi$ 中元素的有限线性组合满足积分性质，于是使用 Schwarz 不等式并注意到 $\mu$ 是不变测度（从而 $\norm{\varphi\circ T}=\norm{\varphi}$），我们知道 $\Phi$ 满足积分性质等价于 $L^2(X)$ 满足积分性质.
+
+        $\Leftarrow$：取 $\varphi=\chi_A,\psi=\chi_B$ 即证.
+
+        $\Rightarrow$：我们知道当 $\varphi,\psi$ 都是特征函数时积分性质成立，而特征函数族是一组 Schauder 基.
+    \end{proof}
+
+    我们可以稍微弱化积分性质，得到弱混合性：
+    \begin{definition}[弱混合性]
+        设 $T:X\to X$ 是概率测度空间上的保测变换. 若 $T$ 满足：$\forall\;\varphi,\psi\in L^2(X)$ 都有 $\lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}{(\int_{X}(\varphi\circ T^k)\cdot \overline{\psi} d\mu-\int_{X}\varphi d\mu\int_{X}\overline{\psi} d\mu)}^2=0$，则称 $T$ 是弱混合的.
+    \end{definition}
+    \begin{remark}
+        \begin{itemize}
+            \item 同样的，弱混合性也可以用集合的语言定义；
+            \item 同样的，弱混合性也可以用 Schauder 基的语言定义；
+            \item 混合性蕴含弱混合性（显然），而弱混合性蕴含遍历性（请证明）；
+            \item 采用类似手法，我们还可以定义更多的混合性，如 $r$ 重混合性、$K$-混合性等，可以参考 Cornfeld-Fomin-Sinai-Sossinskii 的 Ergodic Theory 的 pp. 26.
+        \end{itemize}
+    \end{remark}
+
+    接下来我们验证一下之前提到的例子中，哪些是混合的，哪些不是混合的：
+    \begin{proposition}
+        \begin{itemize}
+            \item 环面平移 $T_{\gamma}$ 不混合；
+            \item $S^1$ 均匀扩张映射 $E_m,\; \abs{m}\geq 2$ 混合.
+        \end{itemize}
+    \end{proposition}
+    \begin{proof}
+        \begin{itemize}
+            \item 我们只需考虑遍历的 $T_{\gamma}$，由于它不是拓扑混合的（之前跳过了它的证明，但证明并不困难，可以尝试一下），则任意足够小的球 $\Delta$，存在无穷多个 $n>0$ 使得 $T_{\gamma}^{-n}(\Delta)\cap \Delta=\emptyset$，于是对应的 $m(T_{\gamma}^{-n}(\Delta)\cap \Delta)=0$（这是 Lebesgue 测度）.
+            \item $\abs{m}$-进制区间 $(\frac{i}{\abs{m}^n},\frac{i+1}{\abs{m}^n}),\; 0\leq i<\abs{m}^n,\; n\geq 0$ 是一个充分族（请证明）. 之前已经深入分析过它的原像集，于是任取 $\abs{m}$-进制区间 $A,B$，当 $n$ 充分大时，$B$ 中 $E_m^{-n}(A)$ 的分支数等于 $\abs{m}^n\cdot m(B)$（提示：若 $B$ 端点的分母是 $\abs{m}^k$，则先对 $E_m^{k-n}(A)$ 在 $S^1$ 上数分支数，而这一分支数与所求相等），于是 $m(E_m^{-n}(A)\cap B)=(\abs{m}^n\cdot m(B)\abs{m}^{-n})m(A)=m(A)m(B)$.
+        \end{itemize}
+    \end{proof}
+
+    最后我们说明遍历、弱混合与算子特征值的关系，并由此说明环面平移也不是弱混合的.
+
+    \begin{definition}[Koopman 算子]
+        设 $T:X\to X$ 是概率测度空间上的保测变换，则定义 Koopman 算子 $U_T:L^2(X)\to L^2(X)$，使得 $U_T(f)=f\circ T$.
+    \end{definition}
+    \begin{remark}
+        这是一个保范（也即酉）的有界线性算子.
+    \end{remark}
+    \begin{theorem}[遍历与弱混合的算子定义]
+        \begin{itemize}
+            \item $T$ 遍历当且仅当 $U_T$ 以 $1$ 为特征根，且其特征函数只有常值函数.
+            \item $T$ 弱混合当且仅当 $U_T$ 所有的特征函数都是常值函数.
+        \end{itemize}
+    \end{theorem}
+    \begin{proof}[部分证明]
+        遍历部分显然.
+
+        弱混合部分的 $\Rightarrow$ 方向，我们反证法：设 $f$ 是 $U_T$ 的非常值特征函数（对应特征值 $\lambda\neq 1$），则由于特征函数相互正交知 $\int_{X}fd\mu=0$，于是 $\abs{\int_{X}U_T^n(f)\cdot \overline{f} d\mu-\abs{\int_{X}f d\mu}^2}=\abs{\lambda^n\int_{X}\abs{f}^2 d\mu}=\norm{f}_2^2\neq 0$ 对所有 $n$ 恒成立，于是与弱混合矛盾.
+
+        弱混合部分的 $\Leftarrow$ 方向，需要谱测度等知识，此处不证，可以参考 Cornfeld-Fomin-Sinai-Sossinskii 的 Ergodic Theory 的 pp. 29；接下来我们也不需要使用这一方向的结论.
+    \end{proof}
+
+    \begin{example}
+        环面平移不是弱混合的.
+    \end{example}
+    \begin{proof}
+        同样只需考虑遍历的 $T_{\gamma}$，这时任取 $k\neq 0$ 使 $k\cdot \gamma\notin \Z$，于是 $f(x)=e^{2\pi i k\cdot x}$ 是非常值连续函数，且 $(f\circ T_{\gamma})(x)=e^{2\pi i k\cdot (x+\gamma)}=e^{2\pi i k\cdot \gamma}\cdot e^{2\pi i k\cdot x}=e^{2\pi i k\cdot \gamma}f(x)$，则 $U_T$ 有特征向量 $f$.
+    \end{proof}
+
+    \section{符号动力系统与遍历论}
+    接下来我们看遍历论性质会在什么意义下得到保持，并通过在符号动力系统中建立测度来解决更多的例子.
+    \begin{definition}[度量同构]
+        设 $T_i$ 是概率空间 $(X_i, \mu_i)$ 的保测变换，$i=1,2$，如果存在一个同构（a.e. 单射）$\phi:X_1\to X_2$ 使得 $T_2\circ \phi=\phi\circ T_1$ 且推前测度 $(\phi_*\mu_1)(A)=\mu_1(\phi^{-1}(A))=\mu_2(A)$ 对所有 $A\subset X_2$ 成立（$\phi$ 此时称为保测变换），则称 $T_1$ 与 $T_2$ 度量同构. 若其他条件都满足，但 $R$ 不是单射，则称 $S$ 是 $T$ 的一个度量因子.
+    \end{definition}
+    
+    \begin{proposition}
+        遍历/混合/弱混合的变换的因子也是遍历/混合/弱混合的.
+    \end{proposition}
+    \begin{proof}
+        记号同上. 对于遍历，只需注意到 $B\subset Y$ 是 $S$ 的严格不变集当且仅当 $R^{-1}(B)$ 是 $T$ 的严格不变集. 对于混合，$\nu(S^{-n}(A)\cap B)=\mu(R^{-1}(S^{-n}(A))\cap R^{-1}(B))=\mu(T^{-n}(R^{-1}(A))\cap R^{-1}(B))\stackrel{n\to\infty}{\to}\mu(R^{-1}(A))\mu(R^{-1}(B))=\nu(A)\nu(B)$（请尝试直接用积分定义来证）. 对弱混合同理.
+    \end{proof}
+
+    \begin{definition}[Bernoulli 测度]
+        任取概率分布 $p=(p_0,\ldots,p_{N-1})$，其中诸 $p_i\in [0,1]$ 且 $\sum\limits_{i=0}^{N-1}p_i=1$，于是在 $\Omega_N$ 上定义乘积测度 $\mu_p$：任意闭圆柱 $C_{\alpha_1,\ldots,\alpha_k}^{n_1,\ldots,n_k}$ 有测度 $\prod\limits_{i=1}^{k}p_{\alpha_i}$，之后将其扩展到 $\Omega_N$ 上的 Borel 集族. 这一测度也叫 Bernoulli 测度.
+    \end{definition}
+    \begin{remark}
+        \begin{itemize}
+            \item 显然符号空间测度 $\mu_p$ 是 $\sigma_N$-平移不变测度，平移 $\sigma_N$ 有时也叫 Bernoulli 平移.
+            \item 我们不考虑 $p_i=1$ 的情况，因为这时得到的测度是原子测度，比较简单.
+            \item 一切都可以迁移到 $\Omega_N^R$ 上.
+            \item 这一测度也是 Haar 测度（这里的“平移”与 $\sigma_N$ 的平移不一样）.
+        \end{itemize}
+    \end{remark}
+
+    \begin{proposition}
+        $\sigma_N$ 相对于 $\mu_p$ 是混合的.
+    \end{proposition}
+    \begin{proof}
+        对圆柱考察定义时，左端是在 $n$ 充分大时恒为常数；由于测度的定义是通过扩展得来的，因此圆柱是充分族.
+    \end{proof}
+
+    类似的，我们也有拓扑 Markov 链对应的测度，不过首先我们需要引入更多矩阵的概念.
+    \begin{definition}[随机矩阵与传递矩阵]
+        矩阵 $\Pi=(\pi_{ij})\in M_N(\R)$ 若满足 $\pi_{ij}\in [0,1]$ 且 $\sum\limits_{j=0}^{N-1}\pi_{ij}=1$，则称为随机矩阵. 进一步的，若随机矩阵 $\Pi$ 存在 $m>0$ 使得 $\Pi^m$ 的所有元素都大于 $0$，则称 $\Pi$ 是传递的.
+    \end{definition}
+    关于这类矩阵，我们有比 Perron-Frobenius 定理更强的结论，但我们同样不给出证明：
+    \begin{theorem}
+        随机矩阵 $\Pi$ 有一个坐标全部非负的单位特征向量 $p$ 且对应特征值 $1$. 若 $\Pi$ 还是传递的，则这个单位特征向量是唯一的，对应的特征根是单根，且其他特征根的模都小于 $1$.
+    \end{theorem}
+
+    \begin{corollary}
+        $\pi_{ij}^{(n)}\stackrel{n\to\infty}{\to}p_i$.
+    \end{corollary}
+    \begin{proof}[证明思路]
+        注意到非 $p$ 空间的压缩性，以及随机矩阵在矩阵空间中是闭子集.
+    \end{proof}
+
+    \begin{definition}[Markov 测度]
+        给定随机矩阵 $\Pi$（对应特征值为 $1$ 的特征向量 $p$），则在 $\Omega_N$ 上定义 Markov 测度 $\mu_{\Pi,p}$：任意对称闭圆柱 $C_{\alpha}^{m}$ 有测度 $p_{\alpha_m}\prod\limits_{i=-m}^{m-1}\pi_{\alpha_i\alpha_{i+1}}$，之后将其扩展到 $\Omega_N$ 上的 Borel 集族.
+    \end{definition}
+    \begin{remark}
+        \begin{itemize}
+            \item Markov 测度 $\mu_{\Pi,p}$ 是 $\sigma_N$-平移不变测度（请证明；证明前先考虑非对称圆柱的测度值，计算它的时候要用到特征向量的性质）.
+            \item 给定 $0-1$ 矩阵 $A$，若 $\pi_{ij}=0$ 当 $a_{ij}=0$，则 Markov 测度 $\mu_{\Pi,p}$ 有 $\supp(\mu_{\Pi,p})\subset \Omega_A$，从而 $\mu_{\Pi,p}$ 也可以视为 $\Omega_A$ 上的测度.
+        \end{itemize}
+    \end{remark}
+
+    \begin{proposition}
+        若 $\Pi$ 是传递的随机矩阵，则 $\sigma_N$ 相对于 Markov 测度 $\mu_{\Pi}$（由于传递性知只有一个合法的 $p$）是混合的.
+    \end{proposition}
+    \begin{proof}
+        同样考虑对称闭圆柱并使用定义验证，则 $n>2m+2$ 时交集 $\sigma_N^{-n}(C_{\alpha}^{m})\cap C_{\beta}^{m}$ 是如下圆柱的并：$C_{\beta_{-m},\ldots,\beta_m,\gamma_{m+1},\ldots,\gamma_{n-m-1},\alpha_{-m},\ldots,\alpha_m}^{-m,\ldots,m,m+1,\ldots,n-m-1,n-m,\ldots,n+m}$，下面的 $\gamma$ 是容许路径的中间段. 这一圆柱的 $\mu_{\Pi}$ 测度是 $\mu_{\Pi}(C_{\beta}^{m})\cdot p_{\beta_m}^{-1}\cdot \mu_{\Pi}(C_{\alpha}^{m})\cdot \pi_{\beta_m\gamma_{m+1}}\prod\limits_{k=1}^{n-2m-2}\pi_{\gamma_{m+k}\gamma_{m+k+1}}\cdot \pi_{\gamma_n\alpha_{-m}}$，对所有容许 $\gamma$ 求和得到 $\mu_{\Pi}(\sigma_N^{-n}(C_{\alpha}^{m})\cap C_{\beta}^{m})=\mu_{\Pi}(C_{\beta}^{m})\mu_{\Pi}(C_{\alpha}^{m})p_{\beta_m}^{-1}\pi_{\beta_m\alpha_{-m}}^{(n-m)}\stackrel{n\to\infty}{\to}\mu_{\Pi}(C_{\beta}^{m})\mu_{\Pi}(C_{\alpha}^{m})p_{\beta_m}^{-1}p_{\beta_m}=\mu_{\Pi}(C_{\beta}^{m})\cdot \mu_{\Pi}(C_{\alpha}^{m})$.
+    \end{proof}
+
+    \begin{example}
+        考察双曲环面自同构 $L=\begin{bmatrix}
+            2&1\\
+            1&1\\
+        \end{bmatrix}$，已知其是 $\sigma_A$ 的因子，其中 $A=\begin{bmatrix}
+            1&1&0&1&0\\
+            1&1&0&1&0\\
+            1&1&0&1&0\\
+            0&0&1&0&1\\
+            0&0&1&0&1\\
+        \end{bmatrix}$，我们知道对应分割 $R^{(1)},R^{(2)}$ 的两条长边之比是 $\frac{\sqrt{5}-1}{2}$，于是赋予 Markov 测度（对应随机矩阵 $\Pi=\begin{bmatrix}
+            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\sqrt{5}-2&0\\
+            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\sqrt{5}-2&0\\
+            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\sqrt{5}-2&0\\
+            0&0&\frac{3-\sqrt{5}}{2}&0&\frac{\sqrt{5}-1}{2}\\
+            0&0&\frac{3-\sqrt{5}}{2}&0&\frac{\sqrt{5}-1}{2}\\
+        \end{bmatrix}$），则 $L$ 是 $\sigma_A$ 的度量因子（环面取 Lebesgue 测度），从而由于 $\sigma_A$ 混合，则 $L$ 混合. 更一般的，我们有如下结论：
+    \end{example}
+
+    \begin{proposition}
+        二位环面上的任何线性双曲自同构在 Lebesgue 测度下都是混合的.
+    \end{proposition}
+    \begin{proof}
+        由于三角多项式 $\chi_{m,n}=e^{2\pi i(mx+ny)}$ 给出了 $L^2$ 的 Schauder 基，则我们只需对其验证积分定义. 任取 $\chi_{m,n},\chi_{k,l}$，考虑积分 $\int_{\T^2}\chi_{m,n}(L^N(x,y))\overline{\chi_{k,l}(x,y)}dxdy$ 的极限. 当 $m=n=k=l=0$ 时积分恒为 $1$，成立；否则不妨设 $(m,n)\neq (0,0)$，这时我们希望的那个极限（右端）$\int_{\T^2}\chi_{m,n}(x,y)dxdy\cdot \int_{\T^2}\overline{\chi_{k,l}(x,y)}dxdy=0$（考察 $m,n$ 一项的积分）. 而 $\chi_{m,n}(L^N(x,y))=\chi_{{(L^T)}^N(m,n)}(x,y)$（$T$ 表示转置），则左端积分为
+        \[
+        \int_{\T^2}\chi_{m,n}(L^N(x,y))\overline{\chi_{k,l}(x,y)}dxdy=\int_{\T^2}\chi_{{(L^T)}^N(m,n)-(k,l)}(x,y)dxdy.
+        \]
+        
+        当 $N\to\infty$ 时，${(L^T)}^N(m,n)$ 与原点 $(0,0)$ 的欧氏距离趋于无穷，则对充分大的 $N$ 必有 ${(L^T)}^N(m,n)\neq (k,l)$，从而左端积分为 $0$.
+    \end{proof}
+    \begin{remark}
+        请尝试用符号动力系统来证明这一结论. 主要的障碍是对一般的双曲自同构，能否构造一样的矩形以及分割？
+    \end{remark}
+
+\end{document}

@@ -72,7 +72,7 @@
     \end{remark}
 
     \begin{theorem}[Krylov-Bogolubov 定理]\label{定理2.4}
-        设 $X$ 是一个紧度量空间，$f:X\to X$ 是一个连续映射，则 $f$ 至少存在一个 Borel 不变测度.
+        设 $X$ 是一个紧度量空间，$f:X\to X$ 是一个连续映射，则 $f$ 至少存在一个 Borel 不变概率测度.
     \end{theorem}
     \begin{proof}
         任取 $x\in X$，我们的动机是说明 $I_x$ 定义式中有子列的极限是良定义的. 取 $C(X)$ 的可数稠密集 $\{\varphi_n\}$（使用 Stone-Weierstrass 定理：取 $X$ 的可数稠密集 $\{x_n\}$，定义 $f_n(x)=d(x,x_n)$，则由 $\{f_n\}\cup \{1\}$ 生成的代数 $\cA$ 满足定理条件），由于 $X$ 的进行，每个 $\varphi_m$ 都满足 $\{\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi_m(f^k(x))\}$ 是有界的，因此任意子列都存在子列收敛到 $J(\varphi_m)\in\R$. 通过对角线法，可以构造出一个子列 $\{n_k\}$，使得对于所有的 $\varphi_m$，都有 $\lim_{k \to \infty} \frac{1}{n_k}\sum_{j=0}^{n_k-1} \varphi_m(f^j(x)) = J(\varphi_m)$.
@@ -91,11 +91,6 @@
     \begin{remark}
         定理说明几乎所有 $A$ 中的点都会无穷次回到 $A$.
     \end{remark}
-
-    为了给本段多凑点字数，我们介绍与拓扑共轭相似的共轭概念：度量同构.
-    \begin{definition}[度量同构]
-        设 $T_i$ 是概率空间 $(X_i, \mu_i)$ 的保测变换，$i=1,2$，如果存在一个同构（a.e. 单射）$\phi:X_1\to X_2$ 使得 $T_2\circ \phi=\phi\circ T_1$ 且推前测度 $(\phi_*\mu_1)(A)=\mu_1(\phi^{-1}(A))=\mu_2(A)$ 对所有 $A\subset X_2$ 成立（$\phi$ 此时称为保测变换），则称 $T_1$ 与 $T_2$ 度量同构. 若其他条件都满足，但 $R$ 不是单射，则称 $S$ 是 $T$ 的一个度量因子.
-    \end{definition}
 
     \section{Birkhoff 遍历定理}
     注~\ref{注2.3} 中实际上可以看出一些时间平均与“空间平均”的对应性，Birkhoff 遍历定理则是这一对应性的正式表述：
