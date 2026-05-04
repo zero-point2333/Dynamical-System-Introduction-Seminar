@@ -1,0 +1,344 @@
+\documentclass[11pt, a4paper, oneside]{ctexart}
+\usepackage{indentfirst, amsmath, amsthm, amssymb, graphicx, float, subfigure, geometry, setspace, xfrac, tikz-cd, enumerate}
+\usepackage[bookmarks=true, colorlinks, citecolor=blue, linkcolor=black]{hyperref}
+\ctexset{
+    section = {
+        format = {\Large\bfseries},
+    }
+}
+
+% 导言区
+
+\title{Note 06}
+\author{zero-point\_}
+\setlength{\parindent}{4ex}
+\pagestyle{plain}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+\setstretch{1.5}
+
+\newtheorem{theorem}{定理}[section]
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{remark}[theorem]{注}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fC}{\mathfrak{C}}
+\newcommand{\fE}{\mathfrak{E}}
+\newcommand{\fR}{\mathfrak{R}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\re}{\mathrm{Re}}
+\newcommand{\diam}{\mathrm{diam}}
+\newcommand{\supp}{\mathrm{supp}}
+\renewcommand{\top}{\mathrm{top}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\norm}[1]{\left\Vert{#1}\right\Vert}
+\renewcommand{\v}[1]{\mathbf{#1}}
+
+\begin{document}
+	\maketitle
+    \section{内容安排}
+    \begin{itemize}
+        \item 测度熵
+        \item 测度熵的计算
+    \end{itemize}
+
+    \section{分割的熵}
+    \begin{definition}[可测分割]
+        给定 $(X,\cB,\mu)$ 概率空间，$I$ 是有限/可数的指标集，则 $\xi=\{C_{\alpha}\in\cB\mid\alpha\in I\}$ 称为可测分割，若 $\mu(X\setminus\bigcup\limits_{\alpha\in I}C_{\alpha})=0$ 且 $\mu(C_{\alpha_1}\cap C_{\alpha_2})=0$ 对任意 $\alpha_1\neq \alpha_2$. 多数时候我们只考虑正测度有限可测分割，并将相差零测的分割视为同一个分割：$\xi=\eta$ 当且仅当 $\forall\; C\in \xi,\;\exists\; D\in\eta,\; \mu(C\triangle D)=0$.
+    \end{definition}
+    
+    \begin{definition}[分割的熵]
+        记分割的熵 $H(\xi)=H_{\mu}(\xi)=-\sum\limits_{\alpha\in I}\mu(C_{\alpha})\log\mu(C_{\alpha})\in [0,\infty]$（视 $0\log 0=0$）.
+    \end{definition}
+    \begin{remark}
+        设 $T:X\to X$ 是保测变换，则 $H(T^{-1}(\xi))=H(\xi)$，其中 $T^{-1}(\xi)=\{T^{-1}(C_{\alpha})\mid \alpha\in I\}$.
+    \end{remark}
+    \begin{definition}[信息函数]
+        给定可测分割 $\xi$，任意 $x\in X$ 都找到 $x\in C_{\xi}(x)\in \xi$ 并定义信息函数 $I_{\xi}(x)=-\log\mu(C_{\xi}(x))$（a.e. 良定义，对不良定义的点，包括没有覆盖到的和两个集合交集的，统一设 $I_{\xi}(x)=0$，由于这两种情况都零测，实际上可以忽略）.
+    \end{definition}
+    \begin{remark}
+        $H_{\mu}(\xi)=\int_{X}I_{\xi}d\mu$.
+    \end{remark}
+
+    \begin{definition}[条件测度与条件熵]
+        给定两个可测集 $A,B$，其中 $\mu(B)>0$，则 $A$ 相对于 $B$ 的条件测度 $\mu_B(A)=\mu(A\mid B)=\frac{\mu(A\cap B)}{\mu(B)}$. 对应的，给定两个可测分割 $\xi=\{C_{\alpha}\mid\alpha\in I\},\;\eta=\{D_{\alpha}\mid \alpha\in J\}$，则 $\xi$ 相对于 $\eta$ 的条件熵 $H(\xi\mid\eta)=-\sum\limits_{\beta\in J}\mu(D_{\beta})\sum\limits_{\alpha\in I}\mu(C_{\alpha}\mid D_{\beta})\log\mu(C_{\alpha}\mid D_{\beta})$.
+    \end{definition}
+    \begin{remark}
+        \begin{itemize}
+            \item 若 $\nu=\{X\}$ 是平凡分割，则 $H(\xi)=H(\xi\mid \nu)$.
+            \item 类似的，我们定义条件信息函数 $I_{\xi,\eta}(x)=-\log\mu(C_{\xi}(x)\mid C_{\eta}(x))$，则 $H(\xi\mid\eta)=\int_{X}I_{\xi,\eta}d\mu$. 这一定义实际上可以推广到连续分割的时候.
+            \item 若记 $\xi_{D_{\beta}}=\{D_{\beta}\cap C_{\alpha}\mid\alpha\in I\}$ 是 $D_{\beta}$ 的可测（w.r.t. 条件测度）分割，则 $H(\xi\mid\eta)=\sum\limits_{\beta\in J}\mu(D_{\beta})H_{\mu_{D_{\beta}}}(\xi_{D_{\beta}})$ 有加权分布的样子.
+        \end{itemize}
+    \end{remark}
+
+    \begin{definition}[分割的偏序]
+        记可测分割 $\xi\leq\eta$，若 $\forall\; D\in \eta,\;\exists\; C\in\xi,\; D\subset C$，这时称 $\eta$ 是 $\xi$ 的加细或 $\xi$ 从属于 $\eta$.
+    \end{definition}
+    \begin{definition}[联合分割]
+        给定两个分割 $\xi,\eta$，则定义联合分割 $\xi\vee\eta=\{C\cap D\mid C\in\xi,\; D\in\eta,\;\mu(C\cap D)>0\}$.
+    \end{definition}
+    \begin{definition}[分割的独立性]
+        给定两个分割 $\xi,\eta$，则称 $\xi$ 与 $\eta$ 独立，若 $\forall\; C\in \xi,\;\forall\; D\in \eta,\; \mu(C\cap D)=\mu(C)\mu(D)$.
+    \end{definition}
+    
+    \begin{proposition}[分割的熵的基本性质]\label{命题分割的熵的基本性质}
+        给定 $(X,\mu)$ 是概率测度空间，$\xi,\eta,\zeta$ 是 $X$ 上的可测分割，$\nu=\{X\}$ 是平凡分割，则
+        \begin{enumerate}[(1)]
+            \item $0\leq -\log(\sup\limits_{C\in\xi}\mu(C))\leq H(\xi)\leq \log\abs{\xi}$，$\xi$ 是有限分割时，右端等号成立当且仅当 $\xi$ 的每个元素测度相等.
+            \item $0\leq H(\xi\mid\eta)\leq H(\xi)$；右端等号成立当且仅当 $\xi$ 与 $\eta$ 独立；左端等号成立当且仅当 $\xi\leq\eta$. 若 $\zeta\geq \eta$，则 $H(\xi\mid\zeta)\leq H(\xi\mid\eta)$.
+            \item $H(\xi\vee\eta\mid\zeta)=H(\xi\mid\zeta)+H(\eta\mid\xi\vee\zeta)$. 特别的，若 $\zeta=\nu$，则 $H(\xi\vee\eta)=H(\xi)+H(\eta\mid\xi)$.
+            \item $H(\xi\vee\eta\mid\zeta)\leq H(\xi\mid\zeta)+H(\eta\mid\zeta)$. 特别的，$H(\xi\vee\eta)\leq H(\xi)+H(\eta)$.
+            \item $H(\xi\mid \eta)+H(\eta\mid \zeta)\geq H(\xi\mid\zeta)$.
+            \item 设 $\lambda$ 是 $X$ 上另一个概率测度，则任意的在 $\mu,\lambda$ 下都可测的分割 $\xi$ 以及任意 $p\in [0,1]$，都有 $pH_{\mu}(\xi)+(1-p)H_{\lambda}(\xi)\leq H_{p\mu+(1-p)\lambda}(\xi)$.
+        \end{enumerate}
+    \end{proposition}
+    \begin{proof}
+        仅提几个不平凡的证明.
+        \begin{enumerate}[(1)]
+            \item 只考虑 $H(\xi)\leq \log \abs{\xi}=:k$，这里只需设 $\phi(x)=x\log x$，则由其强凸性知 $-\frac{1}{k}\log k=\phi(\frac{1}{k})=\phi(\frac{1}{k}\sum\limits_{i=1}^{k}\mu(C_i))\leq \sum\limits_{i=1}^{k}\frac{1}{k}\phi(\mu(C_i))=-\frac{1}{k}H(\xi)$.
+            \item 同样使用 $\phi$ 的强凸性.
+            \item 代入即证.
+            \item 使用 (2)\ (3) 即证.
+            \item $H(\xi\mid\eta)+H(\eta\mid\zeta)=H(\xi\vee\eta)+H(\eta\vee\zeta)-H(\eta)-H(\zeta)=H(\xi\vee\eta\vee\zeta)-H(\zeta\mid\xi\vee\eta)+H(\zeta\mid\eta)-H(\zeta)\geq H(\xi\vee\eta\vee\zeta)-H(\zeta)\geq H(\xi\mid\zeta)$.
+            \item 使用 $\phi$ 的凸性.
+        \end{enumerate}
+    \end{proof}
+    \begin{definition}[Rokhlin 度量]
+        任取两个可测分割 $\xi,\eta$ 且 $H(\xi),H(\eta)<\infty$，定义 Rokhlin 度量 $d_R(\xi,\eta)=H(\xi\mid\eta)+H(\eta\mid\xi)$（请验证它是度量）.
+    \end{definition}
+    \begin{definition}
+        设 $\cP_m$ 是所有的至多 $m$ 个可测集组成的分割组成的集合（两个模零测相等的分割视为同一个分割），在这一集合中的分割，通过添加若干零测集，我们认为分割的集合数就是 $m$. 对于 $\xi,\eta\in\cP_m$，考虑 $\Sigma(\xi,\eta)$ 是所有 $\xi$ 到 $\eta$ 的双射组成的集合，则定义 $\cP_m$ 上的度量 $\cD(\xi,\eta)=\min\limits_{\sigma\in \Sigma(\xi,\eta)}\sum\limits_{C\in \xi}\mu(C\triangle \sigma(C))$（请验证它是度量）.
+    \end{definition}
+    \begin{proposition}
+        $\cD$ 与 $d_R$ 等价.
+    \end{proposition}
+    \begin{proof}
+        首先证明 $\forall\; \varepsilon>0,\; \exists\; \delta>0$ s.t. $\cD(\xi,\eta)<\delta\Rightarrow d_R(\xi,\eta)<\varepsilon$. 设 $\cD(\xi,\eta)=\delta$，则取 $\xi=\{A_i\},\;\eta=\{B_i\}$ 使得 $\sum\limits_{i=1}^{m}\mu(A_i\triangle B_i)=\delta$，并定义 $\alpha_i=\frac{\mu(A_i\setminus B_i)}{\mu(A_i)}$（若 $A_i$ 零测则设为 $0$）. 于是 $-\mu(B_i\cap A_i)\log\frac{\mu(B_i\cap A_i)}{\mu(A_i)}-\sum\limits_{j\neq i}\mu(B_j\cap A_i)\log\frac{\mu(B_j\cap A_i)}{\mu(A_i)}\leq \mu(A_i)(-(1-\alpha_i)\log(1-\alpha_i)-\alpha_i\log\frac{\alpha_i}{m-1})\leq \mu(A_i)\log m$（注意 $\log$ 的凹性）. 对 $i$ 累加即知 $H(\eta\mid \xi)\leq \sum\limits_{\mu(A_i)\geq \sqrt{\delta}}\mu(A_i)(-(1-\alpha_i)\log(1-\alpha_i)-\alpha_i\log\frac{\alpha_i}{m-1})+\sum\limits_{\mu(A_i)<\sqrt{\delta}}\mu(A_i)\log m$. 显然第二项不大于 $m\sqrt{\delta}\log m$，而为了第一项，注意到 $\alpha_i\mu(A_i)=\mu(A_i\setminus B_i)=\sum\limits_{j\neq i}\mu(B_j\cap A_i)\leq \sum\limits_{j=1}^{m}\mu(A_j\triangle B_j)=\delta$，则 $\mu(A_i)\geq \sqrt{\delta}\Rightarrow \alpha_i\leq \sqrt{\delta}$. 由于 $\varphi(x)=-x\log x-(1-x)\log(1-x)$ 在 $(0,\frac{1}{2})$ 单增，则 $\delta\to 0$ 足够小时，$\alpha_i$ 也足够小，而第一项实际上是 $\sum\limits_{\mu(A_i)\geq\sqrt{\delta}}\mu(A_i)(\varphi(\alpha_i)+\alpha_i\log(m-1))\leq\varphi(\sqrt{\delta})+\sqrt{\delta}\log(m-1)$，则 $\delta\to 0$ 时 $H(\eta\mid\xi)\to 0$（对称性知 $H(\xi\mid \eta)\to 0$），即证.
+
+        接下来证明反向的：我们的目标是对称差足够小，而我们手头拥有的估计大概形如 $\frac{\mu(C\cap D)}{\mu(C)}$，因此我们考虑 $\frac{\mu(C\cap D)}{\mu(C)},\frac{\mu(C\cap D)}{\mu(D)}>1-\gamma$ 的 $(C,D)\in(\xi,\eta)$ 对. 首先，对给定的 $C$，我们希望这样的 $(C,D)$ 对只有至多一个：设 $(C,D_1),(C,D_2)$ 都是这样的对，则 $1\geq \frac{\mu(C\cap D_1)+\mu(C\cap D_2)}{\mu(C)}>2-2\gamma$，从而必须 $\gamma>\frac{1}{2}$. 因此，只要 $\gamma<\frac{1}{2}$，则可以保证唯一性. 开始构造双射 $\pi$：若 $C$ 有对应 $D$，则设 $\pi(C)=D$. 接下来我们考虑所有的 $(C,D)$ 对不满足 $\pi(C)=D$，则要么 $\frac{\mu(C\cap D)}{\mu(C)}\leq 1-\gamma$，要么 $\frac{\mu(C\cap D)}{\mu(D)}\leq 1-\gamma$，于是 $\delta>d_R(\xi,\eta)\geq-\sum\limits_{\pi(C)\neq D}\mu(C\cap D)(\log\frac{\mu(C\cap D)}{\mu(C)}+\log\frac{\mu(C\cap D)}{\mu(D)})\geq -\log(1-\gamma)\sum\limits_{\pi(C)\neq D}\mu(C\cap D)$. 将 $\pi:I\to J$ 延拓为 $\xi\to\eta$ 的双射 $\tilde{\pi}$，于是 $\cD(\xi,\eta)\leq \sum\limits_{C\in\xi}\mu(C\triangle\tilde{\pi}(C))=\sum\limits_{C\in I}\mu(C\triangle\pi(C))+\sum\limits_{C\in\xi\setminus I}\mu(C\triangle\tilde{\pi}(C))\leq \sum\limits_{C\in I}\gamma(\mu(C)+\mu(\pi(C)))+\sum\limits_{C\in\xi\setminus I}\mu(C)+\sum\limits_{D\in\eta\setminus \pi(I)}\mu(D)\leq 2\gamma+2\frac{\delta}{-\log(1-\gamma)}$. 固定 $\varepsilon$ 后，首先取 $\gamma<\min\{\frac{\varepsilon}{4},\frac{1}{2}\}$，接下来取 $\delta$ 足够小使得 $\frac{\delta}{-\log(1-\gamma)}<\frac{\varepsilon}{4}$，于是得证.
+    \end{proof}
+
+    \begin{remark}
+        与覆盖的熵（见拓扑熵的拓扑定义）进行对比，可以发现覆盖的熵可以继承分割的熵的多数不等式性质，但对多数等式性质是无法继承的.
+    \end{remark}
+
+    \section{测度熵}
+    \begin{definition}[变换的联合分割]
+        给定可测分割 $\xi$ 和保测变换 $T$，我们定义 $T$ 的 $n$ 级联合分割 $\xi_{-n}^{T}=\xi\vee T^{-1}(\xi)\vee\cdots\vee T^{-n+1}(\xi)$.
+    \end{definition}
+    \begin{remark}
+        下文我们只讨论具有有限熵的有限/可数分割.
+    \end{remark}
+
+    \begin{proposition}
+        $\lim\limits_{n\to\infty}\frac{1}{n}H(\xi_{-n}^T)$ 存在.
+    \end{proposition}
+    \begin{proof}
+        显然只需验证次可加性，而使用命题~\ref{命题分割的熵的基本性质}~(4) 可知 $H(\xi^{T}_{-n-m})=H(\xi^{T}_{-n}\vee T^{-n}(\xi^T_{-m}))\leq H(\xi^{T}_{-n})+H(T^{-n}(\xi^T_{-m}))=H(\xi^{T}_{-n})+H(\xi^T_{-m})$.
+    \end{proof}
+
+    \begin{definition}[测度熵]
+        给定保测变换 $T$ 和分割 $\xi$，则定义 $\xi$ 下的测度熵 $h(T,\xi)=\lim\limits_{n\to\infty}\frac{1}{n}H(\xi_{-n}^T)$，以及 $T$ 的测度熵 $h(T)=h_{\mu}(T)=\sup\limits_{\xi}h(T,\xi)$.
+    \end{definition}
+    \begin{proposition}\label{命题测度熵等价定义}
+        $\{H(\xi\mid T^{-1}(\xi_{-n}^T))\}$ 相对于 $n$ 单调不增；$h(T,\xi)=\lim\limits_{n\to\infty}H(\xi\mid T^{-1}(\xi_{-n}^T))$.
+    \end{proposition}
+    \begin{proof}
+        使用命题~\ref{命题分割的熵的基本性质}~(2) 即知单调性；由于 $H(\xi_{-n}^T)=H(T^{-1}(\xi_{-n+1}^{T}))+H(\xi\mid T^{-1}(\xi_{-n+1}^{T}))=H(\xi_{-n+1}^{T})+H(\xi\mid T^{-1}(\xi_{-n+1}^T))=H(\xi_0^{T})+\sum\limits_{k=0}^{n-1}H(\xi\mid T^{-1}(\xi_{-n+1}^T))$，因此 $h(T,\xi)=0+\lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}H(\xi\mid T^{-1}(\xi_{-n+1}^T))=\lim\limits_{n\to\infty}H(\xi\mid T^{-1}(\xi_{-n}^T))$.
+    \end{proof}
+
+    接下来介绍测度熵的几个基本性质.
+    \begin{proposition}[分割测度熵的基本性质]\label{命题分割测度熵的基本性质}
+        设 $T$ 是保测变换，$\eta,\xi$ 是可测分割，则：
+        \begin{enumerate}[(1)]
+            \item $0\leq \varlimsup\limits_{n\to\infty}-\frac{1}{m}\log(\sup\limits_{C\in \xi_{-n}^T}\mu(C))\leq h(T,\xi)\leq H(\xi)$.
+            \item $h(T,\xi\vee \eta)\leq h(T,\xi)+h(T,\eta)$.
+            \item $h(T,\eta)\leq h(T,\xi)+H(\eta\mid \xi)$；特别的，若 $\xi\leq \eta$，则 $h(T,\xi)\leq h(T,\eta)$.
+            \item （Rokhlin 不等式）$\abs{h(T,\xi)-h(T,\eta)}\leq d_R(\xi,\eta)=H(\xi\mid \eta)+H(\eta\mid \xi)$.
+            \item $h(T,T^{-1}(\xi))=h(T,\xi)$；若 $T$ 是双射，则 $h(T,T(\xi))=h(T,\xi)$.
+            \item $h(T,\xi)=h(T,\bigvee\limits_{i=0}^{k}T^{-i}(\xi))$ 对任意 $k\in\N$ 都成立. 若 $T$ 可逆，则 $h(T,\xi)=h(T,\bigvee\limits_{i=-k}^{k}T^{-i}(\xi))$ 对任意 $k\in\N$ 都成立.
+            \item 若 $\nu$ 是另一个概率测度，$p\in [0,1]$，则 $ph_{\mu}(T,\xi)+(1-p)h_{\nu}(T,\xi)\leq h_{p\mu+(1-p)\nu}(T,\xi)$.
+        \end{enumerate}
+    \end{proposition}
+    \begin{remark}
+        (4) 说明了 $h(T,\cdot)$ 可以视为从分割空间到 $\R$ 上的 Lipschitz 函数，Lipschitz 常数是 $1$.
+    \end{remark}
+    \begin{proof}[命题~\ref{命题分割测度熵的基本性质} 的证明]
+        (1) (2) (7) 显然.
+
+        (3) 考虑
+        \begin{equation*}
+            \begin{aligned}
+                h(T,\eta)=&\lim\limits_{n\to\infty}\frac{1}{n}H(\eta^T_{-n})\\
+                \leq&\lim\limits_{n\to\infty}\frac{1}{n}H(\eta^T_{-n}\vee \xi^T_{-n})\\
+                =&\lim\limits_{n\to\infty}\frac{1}{n}H(\eta^T_{-n}\mid \xi^T_{-n})+\lim\limits_{n\to\infty}\frac{1}{n}H(\xi^T_{-n})\\
+                =&\lim\limits_{n\to\infty}\frac{1}{n}(H(\eta\mid \xi^T_{-n})+H(T^{-1}(\eta_{-n+1}^T)\mid \eta\vee\xi^T_{-n}))+h(T,\xi)\\
+                \leq &\lim\limits_{n\to\infty}\frac{1}{n}(H(\eta\mid \xi)+H(T^{-1}(\eta_{-n+1}^T)\mid \xi^T_{-n}))+h(T,\xi)\\
+                \leq &\lim\limits_{n\to\infty}\frac{1}{n}(H(\eta\mid \xi)+H(T^{-1}(\eta)\mid T^{-1}(\xi))+H(T^{-2}(\eta_{-n+2}^T)\mid \xi^T_{-n}))+h(T,\xi)\\
+                \leq &\lim\limits_{n\to\infty}\frac{1}{n}(nH(\eta\mid \xi))+h(T,\xi)\\
+                =&H(\eta\mid \xi)+h(T,\xi)\\
+            \end{aligned}
+        \end{equation*}
+
+        (4) 是 (3) 的直接推论.
+
+        (5) 只需注意 $H({(T^{-1}(\xi))}_{-n}^{T})=H(T^{-1}(\xi_{-n}^T))=H(\xi_{-n}^T)$.
+
+        (6) 只需注意 ${(\bigvee\limits_{i=0}^{k}T^{-i}(\xi))}_{-n}^T=\xi_{-n-k}^T$.
+    \end{proof}
+
+    接下来我们看看能否将上确界这一复杂操作转为最大值这一确定的、可计算的操作.
+
+    \begin{definition}[充分分割族]
+        设 $\Xi$ 是一族有限熵的可测分割，$T$ 是保测变换，称 $\Xi$ 是充分的，若：
+        \begin{itemize}
+            \item 若 $T$ 不可逆，则考虑 $\{\eta\mid \eta\leq \bigvee\limits_{i=0}^{k}T^{-i}(\xi),\; \xi\in\Xi,\; k\in\N\}$，它是 Rokhlin 度量下的（在有限熵可测分割空间中的）稠密集.
+            \item 若 $T$ 可逆，则要求 $\{\eta\mid \eta\leq \bigvee\limits_{i=-k}^{k}T^{-i}(\xi),\; \xi\in\Xi,\; k\in\N\}$ 是稠密集.
+        \end{itemize}
+    \end{definition}
+    \begin{proposition}
+        设 $(X,d)$ 是紧度量空间，$\mu$ 是非原子 Borel 概率测度，设 $\{\xi_n\}$ 是一列有限熵的可测分割，若 $\lim\limits_{n\to\infty}\diam(\xi_n)=\lim\limits_{n\to\infty}\sup\limits_{C\in\xi_n}\diam(C)=0$，则 $\Xi$ 对任意保测变换 $T$ 都是充分的.
+    \end{proposition}
+    \begin{proof}
+        由于命题与 $T$ 无关，只需证明 $\{\xi_n\}$ 及其在偏序中更小的分割本身稠密. 任取有限熵的可测分割 $\eta$，不妨设 $\eta$ 是有限分割 $\{A_1,\ldots,A_m\}$（为什么？），则由 Borel 测度性质，设闭集 $K_i\subset A_i$ 满足 $\mu(A_i\setminus K_i)\leq \frac{\varepsilon}{m}$，则 $K_i$ 作为紧集 $X$ 的闭子集而紧. 设 $\delta_i=\frac{\mu(A_i)}{\mu(K_i)}-1$，则在 $\varepsilon\to 0$ 时 $\delta_i\to 0$. 又设 $K_0=X\setminus(\bigcup\limits_{i=1}^{m}K_i)$，设 $\tilde{\eta}={\{K_i\}}_{i=0,\ldots,m}$，则
+        \begin{equation*}
+            \begin{aligned}
+                &H(\eta\mid \tilde{\eta})+H(\tilde{\eta}\mid \eta)\\
+                =&-\sum\limits_{j=0}^{m}\sum\limits_{i=1}^{m}\mu(A_i\cap K_j)\log \frac{\mu^2(A_i\cap K_j)}{\mu(K_j)\mu(A_i)}\\
+                =&-\sum\limits_{i=1}^{m}\mu(A_i\cap K_0)\log \frac{\mu^2(A_i\cap K_0)}{\mu(K_0)\mu(A_i)}-\sum\limits_{i=1}^{m}\mu(K_i)\log \frac{\mu(K_i)}{\mu(A_i)}\\
+                \leq&-\sum\limits_{i=1}^{m}\mu(A_i\cap K_0)\log \frac{\mu^2(A_i\cap K_0)}{\mu(K_0)\mu(A_i)}+\sum\limits_{i=1}^{m}\mu(K_i)\log(1+\delta_i)\\
+                \leq&-2\sum\limits_{i=1}^{m}\sqrt{\mu(K_0)\mu(A_i)}\frac{\mu(A_i\cap K_0)}{\sqrt{\mu(K_0)\mu(A_i)}}\log \frac{\mu(A_i\cap K_0)}{\sqrt{\mu(K_0)\mu(A_i)}}+\max\limits_{1\leq i\leq m}\delta_i\\
+                \leq&2e\sum\limits_{i=1}^{m}\sqrt{\mu(K_0)\mu(A_i)}+\max\limits_{1\leq i\leq m}\delta_i\\
+                \leq&2em\sqrt{\varepsilon}+\max\limits_{1\leq i\leq m}\delta_i\\
+                \stackrel{\varepsilon\to 0}{\longrightarrow}&0\\
+            \end{aligned}
+        \end{equation*}
+        于是只需构造分割与 $\tilde{\eta}$ 距离足够近即可.
+
+        接下来，取 $\delta_0=\frac{1}{2}\min\limits_{i\neq j=1,\ldots,m}d(K_i,K_j)$，则取 $\diam(\xi_n)\leq \delta_0$，则构造 $\tilde{\xi}\leq \xi$：$C_i=\bigcup\limits_{C\in\xi,C\cap K_i\neq\emptyset}C$，$C_0=\bigcup\limits_{C\in \xi,C\nsubseteq C_i,i=1,\ldots,m}C$，$\tilde{\xi}=\{C_i\mid i=0,\ldots,m\}$（请验证 $C_i$ 两两不交）. 由于 $\tilde{\xi}$ 与 $\tilde{\eta}$ 的数量相同，我们转成 $\cD$ 距离，则注意到 $K_i\subset C_i\subset K_i\cup K_0$ 当 $1\leq i\leq m$，且 $C_0\subset K_0$，于是 $\mu(C_i\triangle K_i)\leq \mu(K_0)=\varepsilon$ 对于 $i=0,\ldots,m$，则 $\cD(\tilde{\xi},\tilde{\eta})\leq (m+1)\varepsilon$，即证.
+    \end{proof}
+    \begin{theorem}
+        若 $\Xi$ 是充分分割族，则 $h_{\mu}(T)=\sup\limits_{\xi\in\Xi}h_{\mu}(T,\xi)$.
+    \end{theorem}
+    \begin{proof}
+        任取可测分割 $\eta$，则取 $\xi\in\Xi$ 和 $\zeta\leq \bigvee\limits_{i=0}^{k}T^{-i}(\xi)$ 使得 $d_R(\eta,\zeta)<\varepsilon$，则 $h(T,\eta)\leq h(T,\zeta)+\varepsilon\leq h(T,\bigvee\limits_{i=0}^{k}T^{-i}(\xi))+\varepsilon=h(T,\xi)+\varepsilon\stackrel{\varepsilon\to 0}{\longrightarrow}h(T,\xi)$.
+    \end{proof}
+
+    \begin{definition}[生成元]
+        \begin{itemize}
+            \item 分割 $\xi$ 称为 $T$ 下的生成元，若 $\{\xi\}$ 是充分分割族.
+            \item 给定可逆 $T$，称 $\xi$ 是单边生成元，若 $\{\eta\mid \eta\leq \bigvee\limits_{i=0}^{k}T^{-i}(\xi),\; \xi\in\Xi,\; k\in\N\}$ 是稠密集.
+        \end{itemize}
+    \end{definition}
+    \begin{corollary}\label{推论生成元}
+        若 $\xi$ 是 $T$ 下的生成元，则 $h_{\mu}(T)=h_{\mu}(T,\xi)$.
+    \end{corollary}
+    \begin{proposition}
+        若可逆 $T$ 有单边生成元 $\xi$，则 $h_{\mu}(T)=0$.
+    \end{proposition}
+    \begin{proof}
+        由推论~\ref{推论生成元}，只需证 $h(T,\xi)=0$，也即只需证 $h(T,T\xi)=0$. 对 $\forall\; \varepsilon>0$，取 $k\in\N,\; \zeta\leq \bigvee\limits_{i=0}^{k}T^{-i}(\xi)$ 使得 $d(T\xi,\zeta)<\varepsilon$，则 $H(T(\xi)\mid \bigvee\limits_{i=0}^{k}T^{-i}(\xi))\leq H(T(\xi)\mid \zeta)<\varepsilon$，由于 $H(T(\xi)\mid \bigvee\limits_{i=0}^{k}T^{-i}(\xi))$ 相对 $k$ 单调不增，则由命题~\ref{命题测度熵等价定义} 知 $h(T,T\xi)<\varepsilon$.
+    \end{proof}
+
+    \begin{proposition}[测度熵的基本性质]\label{命题测度熵的基本性质}
+        \begin{enumerate}[(1)]
+            \item 若 $S:(Y,\nu)\to (Y,\nu)$ 是 $T:(X,\mu)\to (X,\mu)$ 的度量因子，则 $h_{\nu}(S)\leq h_{\mu}(T)$.
+            \item 设集合 $A$ 是 $T$ 的正测度不变集，则 $h_{\mu}(A)=\mu(A)h_{\mu_A}(T)+\mu(X\setminus A)h_{\mu_{X\setminus A}}(T)$.
+            \item 给定两个 $T$-不变概率测度 $\mu,\lambda$，则对任意 $p\in [0,1]$，有 $h_{p\mu+(1-p)\lambda}(T)\geq ph_{\mu}(T)+(1-p)h_{\lambda}(T)$. 若额外还有 $\mu,\lambda$ 互相奇异（也即存在 $A\subset X$ 使得 $\mu(A)=\lambda(X\setminus A)=1$），则等号成立.
+            \item $h_{\mu}(T^k)=\abs{k}h_{\mu}(T)$（不可逆则 $k\in\N$，可逆则 $k\in \Z$）.
+            \item $h_{\mu\times \lambda}(T\times S)=h_{\mu}(T)+h_{\lambda}(S)$.
+        \end{enumerate}
+    \end{proposition}
+    \begin{remark}
+        事实上，即使两个测度不互相奇异，也有线性性；但是若将 $h_{\cdot}(T)$ 视为不变测度空间上的函数，则其不是弱*连续的.
+    \end{remark}
+    \begin{proof}[命题~\ref{命题测度熵的基本性质} 的证明]
+        \begin{enumerate}[(1)]
+            \item 任意 $Y$ 的可测分割 $\eta$，其拉回 $R^{-1}(\eta)$（$S\circ R=R\circ T$）是 $X$ 的可测分割，且根据度量因子定义，$h_{\mu}(T,R^{-1}(\eta))=h_{\nu}(S,\eta)$.
+            \item 任取 $X$ 的可测分割 $\xi$，以及 $\zeta=\{A,X\setminus A\}$，不妨设 $\xi\geq \zeta$（将 $\xi$ 替换为 $\xi\vee \zeta$ 即知；为什么可以替换？），则 $H_{\mu}(\xi_{-n}^T)=H_{\mu}(\xi_{-n}^T\mid \zeta)=H_{\mu}(\zeta)+\mu(A)H_{\mu_A}(\xi_{-n}^T)+\mu(X\setminus A)H_{\mu_{X\setminus A}}(\xi_{-n}^T)$.
+            \item 显然.
+            \item 用定义就可以验证 $h(T^k,\bigvee\limits_{i=0}^{k}T^{-i}(\xi))=kh_{\mu}(T,\xi)$，再使用命题~\ref{命题分割测度熵的基本性质} 即知正向公式；由于 $\xi_{-n}^T=T^{-n+1}(\xi_{-n}^{T^{-1}})$，则 $h(T,\xi)=h(T^{-1},\xi)$.
+            \item 首先 $h_{\mu\times\lambda}(T\times S,\xi\times\eta)=h_{\mu}(T,\xi)+h_{\lambda}(S,\eta)$（任意 $X,Y$ 的分割 $\eta,\zeta$ 都有 $\eta\times\zeta=(\eta\times \nu_Y)\vee(\nu_X\times \zeta)$，其中 $\nu_{\cdot}$ 表示该空间的平凡分割；$\eta\times \nu_Y,\nu_X\times \zeta$ 相互独立；于是 $H_{\mu\times \lambda}(\eta\times\zeta)=H_{\mu\times\lambda}(\eta\times\nu_Y)+H_{\mu\times\lambda}(\nu_X\times\zeta)=H_{\mu}(\eta)+H_{\lambda}(\zeta)$）；接下来注意到形如 $\xi\times\eta$ 组成的分割族是充分的.
+        \end{enumerate}
+    \end{proof}
+
+    \section{测度熵的计算}
+    \begin{example}[环面平移]
+        在 $\T^d$ 上（取 Lebesgue 测度），使用命题~\ref{命题测度熵的基本性质}~(5) 即知：只需计算 $\T^1=S^1$ 上平移的熵. 设 $\xi_n=\{[\frac{k}{n},\frac{k+1}{n}]\mid k=0,\ldots,n-1\}$，则 $\{\xi_n\mid n\in\N_+\}$ 构成一个充分分割族（考虑半径；为什么不能只取 $\xi_1$？）. 考虑端点数，则 $\bigvee\limits_{i=0}^{N-1}R_{\alpha}^{-i}(\xi_n)$ 的元素个数不多于 $Nn$ 个，则由命题~\ref{命题分割的熵的基本性质}~(1) 知 $H(\bigvee\limits_{i=0}^{N-1}R_{\alpha}^{-i}(\xi_n))\leq \log Nn=\log N+\log n$，于是 $h(R_{\alpha},\xi_N)=0$.
+    \end{example}
+
+    \begin{example}[均匀扩张]
+        考虑 $E_k:S^1\to S^1$ 和 Lebesgue 测度，则 $\xi_0=S^1$ 是 $E_k$ 下的生成元，且 $\xi_n:=\bigvee\limits_{i=0}^{n}E_k^{-i}(\xi_0)$ 将 $S^1$ 均分为 $\abs{k}^{n}$ 个长度为 $\abs{k}^{-n}$ 的线段，于是 $h(E_k)=h(E_k,\xi_0)=\lim\limits_{n\to\infty}\frac{1}{n}H(\xi_{n-1})=\lim\limits_{n\to\infty}\frac{(n-1)\log\abs{k}}{n}=\log\abs{k}$.
+    \end{example}
+
+    \begin{example}[Bernoulli 测度]
+        在 $\Omega_N$ 上考虑左移 $\sigma_N$ 和 Bernoulli 测度 $\mu_p$，则 $\xi_0=\{C_{\alpha}^0\mid \alpha=0,\ldots,N-1\}$ 是 $\sigma_N$ 下的生成元. 注意到 $\{\sigma_N^{-i}(\xi_0)\mid i\in\N\}$ 相互独立，则 $h_{\mu_p}(\sigma_N)=h_{\mu_p}(\sigma_N,\xi_0)=\lim\limits_{n\to\infty}\frac{1}{n}H(\bigvee\limits_{i=0}^{n-1}\sigma_N^{-i}(\xi_0))=H(\xi_0)=-\sum\limits_{i=1}^{N}p_i\log p_i$（注意到 $\sigma_N$ 是保测变换；利用命题~\ref{命题分割的熵的基本性质}~(2)~(3)）.
+    \end{example}
+
+    \begin{example}[Markov 测度]
+        在 $\Omega_N$ 上考虑左移 $\sigma_N$ 和 Markov 测度 $\mu_{\Pi,p}$，则 $\xi_0$ 仍是 $\sigma_N$ 下的生成元（因为只与度量有关，而 $\mu_{\Pi,p}$ 仍然是同一个 Borel 集族下的测度）. 使用命题~\ref{命题测度熵等价定义} 则只需考虑
+        \begin{equation*}
+            \begin{aligned}
+                &H(\xi_0\mid \sigma_N^{-1}(\xi_0)\vee\cdots\vee\sigma_N^{-n}(\xi_0))\\
+                =&-\sum\limits_{j_1,\ldots,j_n=0}^{N-1}\mu(C_{j_1,\ldots,j_n}^{1,\ldots,n})\sum\limits_{i=0}^{N-1}\pi_{ij_1}\log\pi_{ij_1}\\
+                =&-\sum\limits_{j_1=0}^{N-1}p_{j_1}\sum\limits_{i=0}^{N-1}\pi_{ij_1}\log\pi_{ij_1}.\\
+            \end{aligned}
+        \end{equation*}
+        于是 $h_{\mu_{\Pi,p}}(\sigma_N)=-\sum\limits_{i,j=0}^{N-1}p_j\pi_{ij}\log\pi_{ij}$.
+    \end{example}
+
+    \begin{example}[Parry 测度]
+        考虑 $\Omega_A$ 空间，$A=(a_{ij})$ 传递. 我们先按如下流程构造 $\Pi=(\pi_{ij})$. 取 $A$ 全正的特征向量 $q$，$A^T$ 也有全正的特征向量 $v$，归一化 $v$ 使得 $q^T v=1$；它们对应的都是模长最大的那个特征值 $\lambda$（$A,A^T$ 谱相同）. 设 $\pi_{ij}=\frac{a_{ij}v_i}{\lambda v_j}$，则 $\sum\limits_{i=1}^{N}\pi_{ij}=\frac{\sum\limits_{i=1}^{N}a_{ij}v_i}{\lambda v_j}=\frac{\lambda v_j}{\lambda v_j}=1$，于是 $\Pi$ 是随机矩阵，且与 $A$ 的正值位置相同，于是 $\Pi$ 也传递，从而其特征值为 $1$ 的特征向量 $p$ 只有一个，从而 $\mu_{\Pi}$ 支撑就是 $\Omega_A$. 更一般的，可以验证 $p_i=q_i v_i$. $\mu_{\Pi}$ 被称为 $\sigma_A$ 的 Parry 测度，$(\mu_{\Pi},\sigma_A)$ 是混合的.
+
+        最后计算其熵，因为是 Markov 测度的特例，因此直接代入即知 $h_{\mu_{\Pi}}(\sigma_A)=\log \lambda$（请验证；注意 $a_{ij}\log a_{ij}v_i=a_{ij}\log v_i$，因为 $a_{ij}\in\{0,1\}$）.
+    \end{example}
+    \begin{remark}
+        $\mu_{\Pi}$ 可以视为周期轨道的渐近分布.
+    \end{remark}
+
+    \begin{example}[双曲环面自同构]
+        教材仍然直接使用定义计算熵，但显然我们用度量同构，只需考虑 $(\Omega_A,\mu_{\Pi})$ 的熵，其中 $A=\begin{bmatrix}
+            1&1&0&1&0\\
+            1&1&0&1&0\\
+            1&1&0&1&0\\
+            0&0&1&0&1\\
+            0&0&1&0&1\\
+        \end{bmatrix},\Pi=\begin{bmatrix}
+            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\frac{3-\sqrt{5}}{2}&0\\
+            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\frac{3-\sqrt{5}}{2}&0\\
+            \sqrt{5}-2&\sqrt{5}-2&0&\sqrt{5}-2&0\\
+            0&0&\frac{\sqrt{5}-1}{2}&0&\frac{\sqrt{5}-1}{2}\\
+            0&0&\frac{3-\sqrt{5}}{2}&0&\frac{3-\sqrt{5}}{2}\\
+        \end{bmatrix}$. $A$ 的正特征向量 $q=\begin{bmatrix}
+            \frac{\sqrt{5}+1}{2}\\
+            \frac{\sqrt{5}+1}{2}\\
+            \frac{\sqrt{5}+1}{2}\\
+            1\\
+            1\\
+        \end{bmatrix}$（对应特征值 $\lambda_1=\frac{3+\sqrt{5}}{2}$），$A^T$ 的正特征向量 $v=\frac{2}{3\sqrt{5}+5}\begin{bmatrix}
+            1\\
+            1\\
+            \frac{\sqrt{5}-1}{2}\\
+            1\\
+            \frac{\sqrt{5}-1}{2}\\
+        \end{bmatrix}$，于是可以验证 $\mu_{\Pi}$ 是 Parry 测度，从而直接 $h_{\mu}(L)=h_{\mu_{\Pi}}(\sigma_A)=\log\lambda_1$.
+    \end{example}
+
+\end{document}

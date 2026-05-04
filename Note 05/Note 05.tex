@@ -428,16 +428,16 @@
             0&0&1&0&1\\
             0&0&1&0&1\\
         \end{bmatrix}$，我们知道对应分割 $R^{(1)},R^{(2)}$ 的两条长边之比是 $\frac{\sqrt{5}-1}{2}$，于是赋予 Markov 测度（对应随机矩阵 $\Pi=\begin{bmatrix}
-            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\sqrt{5}-2&0\\
-            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\sqrt{5}-2&0\\
-            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\sqrt{5}-2&0\\
-            0&0&\frac{3-\sqrt{5}}{2}&0&\frac{\sqrt{5}-1}{2}\\
-            0&0&\frac{3-\sqrt{5}}{2}&0&\frac{\sqrt{5}-1}{2}\\
-        \end{bmatrix}$），则 $L$ 是 $\sigma_A$ 的度量因子（环面取 Lebesgue 测度），从而由于 $\sigma_A$ 混合，则 $L$ 混合. 更一般的，我们有如下结论：
+            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\frac{3-\sqrt{5}}{2}&0\\
+            \frac{3-\sqrt{5}}{2}&\frac{3-\sqrt{5}}{2}&0&\frac{3-\sqrt{5}}{2}&0\\
+            \sqrt{5}-2&\sqrt{5}-2&0&\sqrt{5}-2&0\\
+            0&0&\frac{\sqrt{5}-1}{2}&0&\frac{\sqrt{5}-1}{2}\\
+            0&0&\frac{3-\sqrt{5}}{2}&0&\frac{3-\sqrt{5}}{2}\\
+        \end{bmatrix}$），则 $L$ 与 $\sigma_A$ 度量同构（环面取 Lebesgue 测度），从而由于 $\sigma_A$ 混合，则 $L$ 混合. 更一般的，我们有如下结论：
     \end{example}
 
     \begin{proposition}
-        二位环面上的任何线性双曲自同构在 Lebesgue 测度下都是混合的.
+        二维环面上的任何线性双曲自同构在 Lebesgue 测度下都是混合的.
     \end{proposition}
     \begin{proof}
         由于三角多项式 $\chi_{m,n}=e^{2\pi i(mx+ny)}$ 给出了 $L^2$ 的 Schauder 基，则我们只需对其验证积分定义. 任取 $\chi_{m,n},\chi_{k,l}$，考虑积分 $\int_{\T^2}\chi_{m,n}(L^N(x,y))\overline{\chi_{k,l}(x,y)}dxdy$ 的极限. 当 $m=n=k=l=0$ 时积分恒为 $1$，成立；否则不妨设 $(m,n)\neq (0,0)$，这时我们希望的那个极限（右端）$\int_{\T^2}\chi_{m,n}(x,y)dxdy\cdot \int_{\T^2}\overline{\chi_{k,l}(x,y)}dxdy=0$（考察 $m,n$ 一项的积分）. 而 $\chi_{m,n}(L^N(x,y))=\chi_{{(L^T)}^N(m,n)}(x,y)$（$T$ 表示转置），则左端积分为
