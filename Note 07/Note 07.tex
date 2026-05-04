@@ -1,0 +1,165 @@
+\documentclass[11pt, a4paper, oneside]{ctexart}
+\usepackage{indentfirst, amsmath, amsthm, amssymb, graphicx, float, subfigure, geometry, setspace, xfrac, tikz-cd, enumerate}
+\usepackage[bookmarks=true, colorlinks, citecolor=blue, linkcolor=black]{hyperref}
+\ctexset{
+    section = {
+        format = {\Large\bfseries},
+    }
+}
+
+% 导言区
+
+\title{Note 07}
+\author{zero-point\_}
+\setlength{\parindent}{4ex}
+\pagestyle{plain}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+\setstretch{1.5}
+
+\newtheorem{theorem}{定理}[section]
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{remark}[theorem]{注}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fC}{\mathfrak{C}}
+\newcommand{\fE}{\mathfrak{E}}
+\newcommand{\fR}{\mathfrak{R}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\re}{\mathrm{Re}}
+\newcommand{\diam}{\mathrm{diam}}
+\newcommand{\supp}{\mathrm{supp}}
+\renewcommand{\top}{\mathrm{top}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\norm}[1]{\left\Vert{#1}\right\Vert}
+\renewcommand{\v}[1]{\mathbf{#1}}
+
+\begin{document}
+	\maketitle
+    \section{内容安排}
+    \begin{itemize}
+        \item 变分原理初步
+    \end{itemize}
+
+    \section{变分原理初步}
+    由于我们没有引入拓扑压强等概念，因此我们只展示最基础的变分原理，也就是“拓扑熵是测度熵的上确界”.
+
+    \begin{theorem}[变分原理]\label{定理变分原理}
+        $f:X\to X$ 是紧度量空间 $(X,d)$ 上的同胚，则 $h_{\top}(f)=\sup\limits_{\mu\in\fR(f)}h_{\mu}(f)$，其中 $\fR(f)$ 是 $X$ 上的 $f$-不变 Borel 概率测度.
+    \end{theorem}
+    \begin{remark}[平衡态]
+        能取到上确界的 $\mu$ 称为平衡态. 平衡态不总是存在.
+    \end{remark}
+    
+    要证明这一定理，我们需要更多的工具.
+    \begin{lemma}[边界的测度]
+        给定紧度量空间 $X$ 和 $\mu\in\fR$ 是 Borel 概率测度，则：
+        \begin{enumerate}[(1)]
+            \item $\forall\; x\in X,\delta>0$，存在 $\delta'\in (0,\delta)$ 使得 $\mu(\partial B(x,\delta'))=0$.
+            \item $\forall\; \delta>0$，存在一个有限的可测分割 $\xi=\{C_1,\ldots,C_k\}$ 使得所有 $\diam(C_i)<\delta$ 且 $\mu(\partial\xi):=\mu(\bigcup\limits_{i=1}^{k}\partial C_i)=0$.
+        \end{enumerate}
+    \end{lemma}
+    \begin{proof}
+        \begin{enumerate}[(1)]
+            \item 反证即由测度可加性即知.
+            \item 由 (1)，对每个 $x\in X$ 都可以取 $B_x$ 是半径小于 $\frac{\delta}{2}$ 的球且 $\mu(\partial B_i)=0$，于是取 $\{B_x\}$ 的有限覆盖 $\{B_1,\ldots,B_k\}$，则令 $C_i=\overline{B}_i\setminus\bigcup\limits_{j=1}^{i-1}\overline{B}_j$，则 $\xi=\{C_1,\ldots,C_k\}$ 是满足条件的分割.
+        \end{enumerate}
+    \end{proof}
+    \begin{remark}
+        若分割 $\xi$ 满足 $\mu(\partial\xi)=0$，且 $f$ 保测，则 $\mu(\partial \xi_{-n}^f)=0$.
+    \end{remark}
+
+    先回顾两个定义.
+    \begin{definition}[Dirac 测度]
+        定义 Dirac 测度 $\delta_x$ 满足：$\delta_x(A)=\begin{cases}
+            1,&x\in A,\\
+            0,&x\notin A\\
+        \end{cases}$.
+    \end{definition}
+    \begin{definition}[推前测度]
+        给定 $X$ 上的测度 $\mu$ 以及 $f:X\to X$，则推前测度 $f_*\mu$ 满足：$(f_*\mu)(A)=\mu(f^{-1}(A))$.
+    \end{definition}
+    \begin{remark}
+        根据弱*收敛的定义，$f_*$ 显然是 Borel 概率测度空间上的连续线性算子.
+    \end{remark}
+
+    \begin{lemma}\label{引理分离集估计}
+        设 $(X,\mu)$ 是紧度量空间，$f:X\to X$ 是同胚，$E_n\subset X$ 是 $(n,\varepsilon)$-分离集，$\nu_n=\frac{1}{\# E_n}\sum\limits_{x\in E_n}\delta_x$ 是 $E_n$ 的均匀度量，$\mu_n=\frac{1}{n}\sum\limits_{i=0}^{n-1}{(f^i)}_*(\nu_n)$. 于是在 $\{\mu_n\mid n\in\N\}$ 在弱*拓扑下的聚点（由 Banach-Alaoglu 定理保证存在）中，存在 $\mu$ 是 $f$-不变的且 $\varlimsup\limits_{n\to\infty}\frac{1}{n}\log \# E_n\leq h_{\mu}(f)$.
+    \end{lemma}
+    \begin{proof}
+        设 $\mu$ 是子列 $\mu_{n_k}$ 的极限，通过继续取子列，不妨设 $\lim\limits_{k\to\infty}\log\frac{\# E_{n_k}}{n_k}=\varlimsup\limits_{n\to\infty}\log\frac{\# E_n}{n}$. 于是 $f_*\mu_n-\mu_n=\frac{{(f^n)}_*\nu_n-\nu_n}{n}$，令 $n\to\infty$ 即知 $f_*\mu=\mu$（因为 $f_*$ 连续）. 考虑直径小于 $\varepsilon$ 的、边界测度为 $0$ 的分割 $\xi$，则首先注意到 $H_{\nu_n}(\xi_{-n}^f)=\log\# E_n$（因为由于半径限制，$\forall\; C\in\xi_{-n}^f$，$\# C\cap E_n\leq 1$）.
+        
+        任意取定 $q\in\N_+$，则对于 $n>q$，我们取定 $0\leq k<q$，再取 $a(k)=[\frac{n-k}{q}]$，则 $\{0,1,\ldots,n-1\}=\{k+rq+i\mid 0\leq r<a(k),0\leq i<q\}\cup S$，其中 $S=\{0,1,\ldots,k-1\}\cup\{k+a(k)q,\ldots,n-1\}$，则 $\# S<k+q<2q$（为什么？）. 于是 $\xi_{-n}^f=(\bigvee\limits_{r=0}^{a(k)-1}f^{-(rq+k)}(\xi_{-q}^f))\vee(\bigvee\limits_{i\in S}f^{-i}(\xi))$，则 $H_{\nu_n}(\xi_{-n}^f)\leq \sum\limits_{r=0}^{a(k)-1}H_{\nu_n}(f^{-(rq+k)}(\xi_{-q}^f))+\sum\limits_{i\in S}H_{\nu_n}(f^{-i}(\xi))\leq \sum\limits_{r=0}^{a(k)-1}H_{{(f^{rq+k})}_*\nu_n}(\xi_{-q}^f)+2q\log \#\xi$. 于是 $\log \#E_n=\frac{1}{q}\sum\limits_{k=0}^{q-1}H_{\nu_n}(\xi_{-n}^f)\leq \frac{1}{q}\sum\limits_{k=0}^{q-1}(\sum\limits_{r=0}^{a(k)-1}H_{{(f^{rq+k})}_*\nu_n}(\xi_{-q}^f)+2q\log \#\xi)\leq \frac{n}{q}H_{\mu_n}(\xi_{-q}^f)+2q\log\#\xi$（为什么？数一下个数）. 于是 $\varlimsup\limits_{n\to\infty}\frac{1}{n}\log \# E_n\leq \lim\limits_{k\to\infty}(\frac{1}{q}H_{\mu_{n_k}}(\xi_{-q}^f)+2\frac{q}{n_k}\log\#\xi)=\frac{1}{q}H_{\mu}(\xi_{-q}^f)$ 对任意 $q$ 成立，令 $q\to\infty$ 即证.
+    \end{proof}
+
+    \begin{proof}[定理~\ref{定理变分原理} 的证明]
+        先证 $\geq$ 方向，也即 $h_{\mu}(f)\leq h_{\top}(f)$ 对任意 $\mu\in\fR$ 成立. 给定可测分割 $\xi=\{C_1,\ldots,C_k\}$，我们同样用紧的 $B_i\subset C_i$ 逼近，并取 $B_0=X\setminus\bigcup\limits_{i=1}^{k}B_i$，设 $\beta=\{B_0,\ldots,B_k\}$，则此前我们已经证明，选取合适的 $B_i$，则 $d_R(\xi,\beta)<1$，则 $\abs{h_{\mu}(f,\xi)-h_{\mu}(f,\beta)}<1$. 定义 $\cB=\{B_0\cup B_1,\ldots,B_0\cup B_k\}$，它是 $X$ 的开覆盖（为什么开？），且 $H_{\mu}(\beta_{-n}^f)\leq \log\# \beta_{-n}^f\leq \log(2^n\cdot\#\cB_{-n}^f)$，其中 $\cB_{-n}^f$ 是集族 $\{B_{i_0}\cap\cdots\cap f^{-(n-1)}(B_{i_{n-1}})\mid B_{i_0},\ldots,B_{i_{n-1}}\in\cB\}$ 的可以形成覆盖的元素最少的子集族（最小覆盖）. 设 $\delta_0$ 是 $\cB$ 的 Lebesgue 数，则其也是 $\cB_{-n}^f$ 在 $d_n^f$ 下的 Lebesgue 数. 由于 $\cB_{-n}^f$ 是最小覆盖，则 $\forall\; C\in \cB_{-n}^f$ 存在 $x_C\in C$ 使得 $x_C$ 不在 $\cB_{-n}^f$ 的任何其他元素内. 于是 $\{x_C\mid C\in\cB_{-n}^f\}$ 是 $(n,\delta_0)$ 分离集（反证法可知）. 于是 $h_{\mu}(f,\xi)\leq h_{\mu}(f,\beta)+1\leq \lim\limits_{n\to\infty}\frac{1}{n}\log\#\cB_{-n}^f+\log 2+1\leq h_{\top}(f)+\log 2+1$. 左边取上确界则 $h_{\mu}(f)\leq h_{\top}(f)+\log 2+1$ 对任意 $f$ 成立. 于是取 $f^n$ 代入上式，则 $h_{\mu}(f^n)=nh_{\mu}(f)\leq h_{\top}(f^n)+\log 2+1=nh_{\top}(f^n)+\log 2+1$，两边同除以 $n$ 再令 $n\to\infty$，则 $h_{\mu}(f)\leq h_{\top}(f)$.
+
+        对 $\leq$ 方向，使用引理~\ref{引理分离集估计}，每个 $n$ 取最大分离集即知：任意 $\varepsilon>0$，存在 $\mu\in\fR(f)$ 使得 $\varlimsup\limits_{n\to\infty}\frac{1}{n}\log N_X(f,\varepsilon,n)\leq h_{\mu}(f)$，右边先取上确界，然后左边令 $\varepsilon\to 0$，即证.
+    \end{proof}
+
+    最后我们看一个广泛的应用：扩张性映射（这里英文是 expansive，与扩张映射 expanding 不同）.
+
+    \begin{definition}[扩张性映射]
+        给定紧度量空间 $X$ 和连续映射 $f:X\to X$，$f$ 称为扩张性映射，若存在 $\delta>0$ 使得：若 $x,y\in X$ 满足 $\forall\;n\in\N,\; d(f^n(x),f^n(y))<\delta$，则必有 $x=y$. 满足上述要求的 $\delta$ 的上确界称为扩张性常数.
+    \end{definition}
+    \begin{remark}
+        \begin{itemize}
+            \item 若 $f$ 是同胚，则定义改为 $n\in\Z$，实际上是放宽了要求.
+            \item 由于 $X$ 紧，扩张性与度量选取无关，因此这是个拓扑共轭不变的性质.
+            \item 容易证明对一般的 $S^1$ 上的扩张映射，它们都是扩张性映射.
+            \item 容易证明对任意有限符号的动力系统 $\Omega_A$，$\sigma_A$ 都是扩张性的.
+        \end{itemize}
+    \end{remark}
+    \begin{lemma}
+        给定紧度量空间 $X$，$f:X\to X$ 是扩张性映射，扩张性常数 $\delta_0$，则 $\forall\; 0<\varepsilon<\frac{\delta_0}{2},\;\forall\;\delta>0,\;\exists\; C_{\delta,\varepsilon}>0$（$\delta>\varepsilon$ 时显然可取其为 $1$），使得 $\forall\; n\in\N$ 都有 $N_d(f,\delta,n)\leq C_{\delta,\varepsilon}N_d(f,\varepsilon,n)$.
+    \end{lemma}
+    \begin{proof}
+        取定 $\varepsilon,\delta$. 取定 $N\in\N$ 使得 $d_{2N+1}^f(f^{-N}(x),f^{-N}(y))$（为什么存在这样的 $N$？反证法，利用 $X$ 紧性，得到与扩张性的矛盾）. 取定 $\alpha>0$ 使得 $d(x,y)\leq \alpha\Rightarrow d_{2N+1}^f(f^{-N}(x),f^{-N}(y))\leq \delta$（由于 $X$ 紧则 $f^{-N}$ 一致连续，则存在 $\alpha$）. 接下来任取 $n>2N$.
+
+        取 $E,F$ 分别是最大的 $(n,\delta),(n,\varepsilon)$-分离集，则 $\forall\; x\in E$ 都存在 $z(x)\in F$ 使得 $d_n^f(x,z(x))<\varepsilon$，于是定义 $E_z=\{x\in E\mid z(x)=z\}$，则 $\# E\leq \sum\limits_{z\in F}\# E_z$（因为一个 $z$ 可以对应多个 $x$），于是只需证明 $\# E_z$ 有一个不依赖于 $n$ 的上界.
+
+        若 $x,y\in E_z\subset E$，则 $d_n^f(x,y)\leq 2\varepsilon$，则任意 $N\leq i<n-N$，都有 $d(f^i(x),f^i(y))\leq \delta$，则由 $\alpha$ 的定义并用反证法，可以知道 $d(x,y)>\alpha$ 或者 $d(f^n(x),f^n(y))>\alpha$，于是考虑 $X\times X$ 以及嵌入 $x\mapsto (x,f^n(x))$，则 $\# E_z=\# \{(x,f^n(x))\mid x\in E_z\}\leq \max\{\# A\mid A\subset X\times X,\forall\; a,b\in A,\; d_{X\times X}(a,b)>\alpha\}=M$ 是常数（准确的说，其与 $n$ 无关），即证.
+    \end{proof}
+
+    \begin{corollary}
+        给定紧度量空间 $X$，$f:X\to X$ 是扩张性映射，扩张性常数 $\delta_0$，则对 $0<\varepsilon<\delta_0$，$h_d(f,\delta)=h_{\top}(f)$，这时可以取到平衡态.
+    \end{corollary}
+    \begin{proof}
+        在定理~\ref{定理变分原理} 的最后不让 $\varepsilon\to 0$ 而是直接让左端 $=h_{\top}(f)$ 即证.
+    \end{proof}
+
+    更一般的变分原理是建立在拓扑压强下的，这里我们仅仅展示定义和定理，不给出证明以及其直观，感兴趣的同学可以自行搜索关键词 ``Thermodynamic Formalism'' 学习（我参考的资料是 L. Barreira, \emph{Thermodynamic Formalism and Applications to Dimension Theory}，但是没有读过它的证明，不保证其严谨性）.
+
+    \begin{definition}
+        给定紧度量空间 $X$，$f:X\to X$ 是连续映射，$\varphi:X\to \R$ 是连续函数，则 $\varphi$ 在 $(X,f)$ 下的拓扑压强定义如下：
+        \[
+        P(\varphi)=\lim\limits_{\varepsilon\to 0}\varlimsup\limits_{n\to\infty}\frac{1}{n}\log\sup\limits_{E_n}\sum\limits_{x\in E_n}\exp(\sum\limits_{k=0}^{n-1}\varphi(f^k(x))),
+        \]
+        其中上确界 $\sup\limits_{E_n}$ 的 $E_n$ 取遍 $(n,\varepsilon)$-分离集.
+    \end{definition}
+    \begin{remark}
+        请验证：$P(0)=h_{\top}(f)$.
+    \end{remark}
+    \begin{theorem}[一般变分原理]
+        记号同上，则 $P(\varphi)=\sup\limits_{\mu\in\fR}(h_{\mu}(f)+\int_{X}\varphi d\mu)$.
+    \end{theorem}
+
+\end{document}
