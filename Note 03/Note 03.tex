@@ -288,7 +288,9 @@
             0&0&1&0&1\\
         \end{bmatrix}$，于是 $h(L)\leq h(\sigma_A)=\log\frac{3+\sqrt{5}}{2}$.
 
-        接下来考虑周期点，首先由于特征值 $\lambda_1=\frac{3+\sqrt{5}}{2}\in (2,3)$，于是我们考虑 $\varepsilon=\frac{1}{6}$ 下的 $N_d(L,\varepsilon,n)$，其中 $n$ 充分大. 任取两个周期为 $n$ 的周期点 $p,q$，若 $d(p,q)\geq \varepsilon$ 则已互相分离，而 $d(p,q)<\varepsilon$ 时，由于 $\varepsilon$ 足够小，我们可以找到一个以特征方向为边方向的最小矩形 $psqt$（逆时针），而该矩形作用 $n$ 次后的半径会远大于该矩形本身的半径，因此不再是最小矩形，虽然 $p,q$ 两点不变，因此这时在 $\R^2$ 上 $d(L^n(p),L^n(s))>1$，从而由于在 $\R^2$ 上 $d(L^n(p),L^n(s))=\lambda_1^n d(p,s)$，因此存在 $k\in [0,n-1]$ 使得 $d(L^k(p),L^k(s))\in [\varepsilon,3\varepsilon]$，于是 $d(L^k(p),L^k(q))\in [\varepsilon,3\sqrt{2}\varepsilon]$ 在 $\R^2$ 上，由于 $3\sqrt{2}\varepsilon=\frac{1}{\sqrt{2}}$ 则这一距离也是 $\T^2$ 上的距离. 综上，$N_d(L,\varepsilon,n)\geq P_n(L)=\lambda_1^n+\lambda_1^{-n}-2$，于是 $h(L)\geq h_d(L,\varepsilon)=\varliminf\limits_{n\to\infty}\frac{1}{n}\log N_d(L,\varepsilon,n)=\log \lambda_1=\log \frac{3+\sqrt{5}}{2}$. 于是 $h(L)=\log\frac{3+\sqrt{5}}{2}$.
+        接下来考虑周期点，首先由于特征值 $\lambda_1=\frac{3+\sqrt{5}}{2}\in (2,3)$，于是我们考虑 $\varepsilon=\frac{1}{6}$ 下的 $N_d(L,\varepsilon,n)$，其中 $n$ 充分大. 任取两个周期为 $n$ 的周期点 $p,q$，若 $d(p,q)\geq \varepsilon$ 则已互相分离，而 $d(p,q)<\varepsilon$ 时，由于 $\varepsilon$ 足够小，我们可以找到一个以特征方向为边方向的最小矩形 $psqt$（逆时针），而该矩形作用 $n$ 次后的半径会远大于该矩形本身的半径，因此不再是最小矩形，虽然 $p,q$ 两点不变. 我们知道，若设 $p=(p_x,p_y)$，则 $psqt\subset (p_x-\frac{1}{2},p_x+\frac{1}{2})\times (p_y-\frac{1}{2},p_y+\frac{1}{2})=I_p$，而既然 $L^n(psqt)$ 不是最小矩形，则 $L^n(q)\notin I_p$，于是 $d(L^n(p),L^n(q))$ 在 $\R^2$ 上 $>\frac{1}{2}$. 既然 $\frac{\frac{1}{2}}{\varepsilon}>3$，因此存在 $k>0$ 使得 $\varepsilon<d(L^k(p),L^k(q))<\frac{1}{2}$（请验证），而由于 $\R^2$ 上两点距离 $<\frac{1}{2}$ 时，在 $\T^2$ 上两点投影的距离与 $\R^2$ 相同，因此此时 $\T^2$ 上 $d(L^k(p),L^k(q))>\varepsilon$，于是 $d_n^L(p,q)>\varepsilon$. 于是所有周期为 $n$ 的周期点集是 $(n,\varepsilon)$-分离集.
+        
+        综上，$N_d(L,\varepsilon,n)\geq P_n(L)=\lambda_1^n+\lambda_1^{-n}-2$，于是 $h(L)\geq h_d(L,\varepsilon)=\varliminf\limits_{n\to\infty}\frac{1}{n}\log N_d(L,\varepsilon,n)=\log \lambda_1=\log \frac{3+\sqrt{5}}{2}$. 于是 $h(L)=\log\frac{3+\sqrt{5}}{2}$.
     \end{example}
 
 \end{document}

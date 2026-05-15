@@ -74,10 +74,21 @@
     \begin{theorem}[Krylov-Bogolubov 定理]\label{定理2.4}
         设 $X$ 是一个紧度量空间，$f:X\to X$ 是一个连续映射，则 $f$ 至少存在一个 Borel 不变概率测度.
     \end{theorem}
-    \begin{proof}
+    \begin{proof}[证明1]
         任取 $x\in X$，我们的动机是说明 $I_x$ 定义式中有子列的极限是良定义的. 取 $C(X)$ 的可数稠密集 $\{\varphi_n\}$（使用 Stone-Weierstrass 定理：取 $X$ 的可数稠密集 $\{x_n\}$，定义 $f_n(x)=d(x,x_n)$，则由 $\{f_n\}\cup \{1\}$ 生成的代数 $\cA$ 满足定理条件），由于 $X$ 的进行，每个 $\varphi_m$ 都满足 $\{\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi_m(f^k(x))\}$ 是有界的，因此任意子列都存在子列收敛到 $J(\varphi_m)\in\R$. 通过对角线法，可以构造出一个子列 $\{n_k\}$，使得对于所有的 $\varphi_m$，都有 $\lim_{k \to \infty} \frac{1}{n_k}\sum_{j=0}^{n_k-1} \varphi_m(f^j(x)) = J(\varphi_m)$.
         
         接下来我们把 $J$ 延拓到全空间 $C(X)$ 上. 对于任意 $\varphi\in C(X)$，存在 $\{\varphi_{m_l}\}$ 使得 $\varphi_{m_l}\rightrightarrows \varphi$（则 $\{\varphi_{m_l}\}$ 一致有界，则不妨设 $\lim\limits_{l\to\infty} J(\varphi_{m_l})$ 存在），则 $\abs{\frac{1}{n_k}\sum\limits_{j=0}^{n_k-1} \varphi(f^j(x))-\frac{1}{n_k}\sum\limits_{j=0}^{n_k-1} \varphi_{m_l}(f^j(x))}\leq \norm{\varphi-\varphi_{m_l}}_{\infty}$，两边先令 $k\to\infty$ 再令 $l\to\infty$（这里先对 $k$ 取上极限再取 $l$ 极限可知下式的上极限存在；先对 $k$ 取下极限再取 $l$ 极限可知下式的下极限存在且与上极限相等），则 $\lim\limits_{k\to\infty}\frac{1}{n_k}\sum\limits_{j=0}^{n_k-1} \varphi(f^j(x))=:J(\varphi)$ 存在. 由定义式知 $J$ 有界线性，则 $J$ 连续. 更进一步的，注~\ref{注2.3} 中的性质对 $J$ 同样成立，于是它对应了不变 Borel 概率测度 $\mu_x$.
+    \end{proof}
+    \begin{proof}[证明2]
+        任取 $X$ 上的 $f$-不变概率单点测度 $\mu=\delta_x$，则考虑 $\mu_n=\frac{1}{n}\sum\limits_{k=0}^{n-1}{(f^k)}_*(\mu)$，由于 Borel 概率测度空间弱*紧，因此 $\{\mu_n\}$ 有收敛子列 $\{\mu_{n_k}\}\to \mu_0$，而容易验证
+        \begin{equation*}
+            \begin{aligned}
+                \mu_0(f^{-1}(A))=&\lim\limits_{k\to\infty}\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\delta_x(f^{-l-1}(A))\\
+                =&\lim\limits_{k\to\infty}\frac{1}{n_k}(\sum\limits_{l=0}^{n_k-1}\delta_x(f^{-l}(A))-\delta_x(A)+\delta_x(f^{-n_k}(A)))\\
+                =&\mu_0(A).\\
+            \end{aligned}
+        \end{equation*}
+        于是 $f_* \mu_0=\mu_0$，从而构造出来了不变概率测度.
     \end{proof}
 
     \section{Poincaré 回归定理}
