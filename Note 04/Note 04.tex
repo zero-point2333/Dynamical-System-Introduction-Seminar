@@ -33,6 +33,7 @@
 \newcommand{\cA}{\mathcal{A}}
 \newcommand{\cB}{\mathcal{B}}
 \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cI}{\mathcal{I}}
 \newcommand{\cO}{\mathcal{O}}
 \newcommand{\Id}{\mathrm{Id}}
 \newcommand{\re}{\mathrm{Re}}
@@ -109,9 +110,9 @@
         设 $T$ 是概率空间 $(X,\mu)$ 的保测变换，$\varphi\in L^1(X,\mu)$，则对于 $\mu$-几乎所有 $x\in X$，时间平均 $\varphi_T(x)=I_x(\varphi)=\lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(T^k(x))$ 都良定义，且 $\int_{X} \varphi d\mu=\int_{X} \varphi_T d\mu$.
     \end{theorem}
     \begin{remark}
-        虽然这是遍历论一个几乎是基石性的定理，但和其他的基石不同，这个定理的证明非常困难，且涉及大量实分析的知识，而且证明的过程对遍历论本身的研究没有很高的启发性，因此不要求掌握. 另外应当提到的是，我们并没有要求 $X$ 有任何测度之外的性质.
+        虽然这是遍历论一个几乎是基石性的定理，但和其他的基石不同，这个定理的证明非常困难，且涉及大量实分析的知识，而且证明 1 的过程对遍历论本身的研究没有很高的启发性，因此不要求掌握. 另外应当提到的是，我们并没有要求 $X$ 有任何测度之外的性质.
     \end{remark}
-    \begin{proof}[定理~\ref{定理4.1} 的证明]
+    \begin{proof}[定理~\ref{定理4.1} 的证明1]
         设 $s_n(x)=s_{n,\varphi}(x)=\sum\limits_{k=0}^{n-1}\varphi(T^k(x))$（$n=0$ 时恒为 $0$），$A=A_{\varphi}=\{x\in X\mid \sup\limits_{n\geq 0}s_n(x)>0\}$，则我们首先断言 $\int_{A}\varphi(x)d\mu\geq 0$. 我们知道 $s_k(Tx)=s_{k+1}(x)-\varphi(x)$，两边对 $0\leq k\leq n-1$ 取最大值，则 $\max\limits_{0\leq k\leq n}s_k(Tx)=\max\limits_{0\leq k\leq n}\sum\limits_{i=0}^{k}\varphi(T^i x)-\varphi(x)=:\Phi_{n+1}^*(x)-\varphi(x)$，而 $\max\limits_{0\leq k\leq n}(s_{k+1}(x)-\varphi(x))=\max(0,\max\limits_{0<k\leq n}\sum\limits_{i=1}^{k}\varphi(T^i x))=:\Phi_n(Tx)$，则 $\varphi(x)=\Phi_{n+1}^*(x)-\Phi_n(Tx)\geq \Phi_n^*(x)-\Phi_n(Tx)$. 注意到其实记号 $\Phi_n(x)=\max(0,s_1(x),\ldots,s_n(x)),\; \Phi_n^*(x)=\max(s_1(x),\ldots,s_n(x))$. 记 $A_n=\{x\in X\mid \Phi_n(x)>0\}$，两边积分知 $\int_{A_n}\varphi(x)d\mu\geq \int_{A_n}\Phi_n^*(x)d\mu-\int_{A_n}\Phi_n(Tx)d\mu$. 但在 $A_n$ 内 $\Phi_n^*=\Phi_n$，在 $A_n$ 外 $\Phi_n=0$，则 $\int_{A_n}\Phi_n^*(x)d\mu=\int_X \Phi_n(x)d\mu$；对 $\Phi_n(Tx)$ 项也放缩（恒非负），则 $\int_{A_n}\varphi(x)d\mu\geq \int_{X}\Phi_n(x)d\mu-\int_{X}\Phi_n(Tx)d\mu=0$ 由于 $T$ 保测. 令 $n\to\infty$ 则 $A=\bigcup\limits_{n=1}^{\infty}A_n$，即证.
 
         设 $E_{a,b}=\{x\in X\mid \varliminf\limits_{n\to\infty}\frac{s_n(x)}{n}<a<b<\varlimsup\limits_{n\to\infty}\frac{s_n(x)}{n}\}$，对于极限 a.e. 存在的命题，我们只需证明对所有 $a,b\in \R$ 有 $\mu(E_{a,b})=0$（为什么？）. 我们任取 $a,b$，设 $E=E_{a,b}$，设 $g(x)=\begin{cases}
@@ -137,6 +138,21 @@
             \end{aligned}
         \end{equation*}
         令 $n\to\infty$ 即证.
+    \end{proof}
+
+    若引入条件期望的概念，证明会稍微简单一些，因为我们可以尝试证明时间平均的极限是条件期望.
+    \begin{definition}[条件期望]\label{定义4.3}
+        我们知道，测度是相对于给定的 $\sigma$-代数确定的，我们设底空间是概率空间 $(X,\cF,\mu)$，设 $\cF'$ 是 $\cF$ 的子 $\sigma$-代数，$\varphi\in L^1(X,\cF,\mu)$，则存在 a.e. 唯一的条件期望 $E(\varphi|\cF')$ 定义如下：$E(\varphi|\cF')$ 是 $(\cF',\mu)$ 的可测函数（显然，$\varphi$ 不一定在 $(\cF',\mu)$ 上可测，因为 $\sigma$-代数缩小了），且 $\forall\ A\in\cF',\ \int_{A}E(\varphi|\cF')d\mu=\int_{A}\phi d\mu$. 
+    \end{definition}
+    \begin{proof}[定义~\ref{定义4.3} 中存在唯一性的证明]
+        $\forall\ A\in\cF'$，取 $\nu(A)=\int_{A}\phi d\mu$，则 $\nu\ll \mu\mid_{\cF'}$，于是由 Radon-Nikodym 定理知存在唯一的 $\Phi=\frac{d\nu}{d\mu}:X\to \R^+$ 使得 $\int_{A}\Phi d\mu=\nu(A)$.
+    \end{proof}
+    \begin{proof}[定理~\ref{定理4.1} 的证明2]
+        $s_n$ 记号同上. 设 $\cI=\{A\in \cF\mid \mu(T^{-1}(A)\triangle A)=0\}$（$A\triangle B$ 指对称差 $(A\setminus B)\cup (B\setminus A)$），这是 $\cF$ 的子 $\sigma$-代数（请验证）. 我们的最终目的是 $\varphi_T(x)$ a.e. 收敛到 $E(\varphi|\cI)$. 我们断言，$\psi:X\to \R$ 若是 $(X,\cI,\mu)$ 上的可测函数，则 $\psi\circ T=\psi$ a.e. 成立. 采用反证法，$\exists\ a\in \R$ 使得 $A_a^+=\{x\in A\mid \psi(x)<a,\psi(T(x))>a\},A_a^-=\{x\in A\mid \psi(x)<a,\psi(T(x))>a\}$ 中有一个测度是正的（因为零测集的可数并零测；不妨设是前者），且它们都在 $\cI$ 中（因此它们都是 a.e. 不变集），则 $\psi\circ T<a$ 在 $T^{-1}(A_a^+)\stackrel{a.e.}{=}A_a^+$ 上成立，但我们又要求 $\psi\circ T>a$，因此 $A_a^+=\emptyset$，从而测度为 $0$，矛盾.
+        
+        接下来任取 $f\in L^1(\mu)$，设 $F_n=\max\{\sum\limits_{i=0}^{k-1}f\circ T^i\mid 1\leq k\leq n\}$，则 $\forall\ x\in X$，都有 $F_{n+1}(x)-F_n(T(x))=f(x)-\min\{0,F_n(T(x))\}\geq f(x)$（请证明；可以联想一下最大子段和算法），且由于 $F_n$ 在 $T(x)$ 处单调递增，则 $F_{n+1}(x)-F_n(T(x))$ 单调递减. 设 $A=\{x\mid \sup\limits_{n\in\N_+}\sum\limits_{i=0}^{n}f(T^i(x))=\infty\}$，则 $A\in \cI$（请验证）. 若 $x\in A$，则 $F_{n+1}(x)-F_n(T(x))=f(x)$ 在 $n$ 充分大时成立. 于是 $0\leq \int_{A}(F_{n+1}-F_n)d\mu\leq \int_{A}(F_{n+1}-F_n\circ T)d\mu=\int_{A}fd\mu$ 对充分大的 $n$ 成立，因此 $\int_{A}fd\mu\geq 0$. 反之，若 $x\notin A$，则容易证明 $\varlimsup\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}(f\circ T^k)(x)\leq 0$. 设 $f_{\cI}=E(f|\cI)$. 若 $f_{\cI}\stackrel{a.e.}{<}0$，则 $\int_{C}fd\mu=\int_{C}f_{\cI}d\mu<0$ 对于任意正测度的 $C\in \cI$ 都成立，于是由于 $A\in \cI$，必有 $\mu(A)=0$，于是 $\varlimsup\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}(f\circ T^k)(x)\leq 0$ a.e. 成立.
+
+        接下来，设 $f=\varphi-\varphi_{\cI}-\varepsilon$，其中 $\varphi_{\cI}=E(\varphi|\cI),\varepsilon>0$，则 $f_{\cI}=-\varepsilon<0$. 注意到 $\varphi_{\cI}\circ T=\varphi_{\cI}$ a.e. 成立，则 $\varlimsup\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}(f\circ T^k)(x)=\varlimsup\limits_{n\to\infty}(\frac{1}{n}\sum\limits_{k=0}^{n-1}(\varphi\circ T^k)(x)-\varphi_{\cI}-\varepsilon)\leq 0$，也即 $\varlimsup\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}(\varphi\circ T^k)(x)\leq \varphi_{\cI}+\varepsilon$ a.e. 成立；考虑 $-\varphi$ 则亦有 $\varliminf\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}(\varphi\circ T^k)(x)\geq \varphi_{\cI}-\varepsilon$，令 $\varepsilon\to 0$，则的确 $\lim\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}(\varphi\circ T^k)(x)=\varphi_{\cI}$. 积分式由于 $\varphi_{\cI}$ 定义而显然.
     \end{proof}
     \begin{remark}
         \begin{itemize}
