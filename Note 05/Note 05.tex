@@ -62,7 +62,7 @@
     \end{definition}
     \begin{remark}
         \begin{itemize}
-            \item 显然严格不变集是不变集.
+            \item 显然严格不变集是不变集（这里稍微放宽一下不变集，也即要求 $f(A)\subset A$）.
             \item $f$-严格不变集 $A$ 满足性质 $\chi_A\circ f=\chi_A$，也即 $\chi_A$ 是 $f$-不变函数.
         \end{itemize}
     \end{remark}
@@ -168,13 +168,13 @@
     \end{proof}
 
     \begin{proposition}
-        若 $f:X\to X$ 是紧度量概率测度空间上的唯一遍历的连续函数，则任意 $\varphi\in C(X)$，时间平均 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))$ 一致收敛.
+        若 $f:X\to X$ 是紧度量概率测度空间上的唯一遍历的连续函数，则任意 $\varphi\in C(X)$，时间平均 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))$ 一致收敛到常数.
     \end{proposition}
     \begin{proof}
         证逆否命题. 存在 $a<b$ 以及两列点 $\{x_k\},\{y_k\}$ 以及 $\{n_k\}\to \infty$ 使得 $\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\varphi(f^l(x_k))<a$ 且 $\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\varphi(f^l(y_k))>b$. 通过 K-B 定理的证明过程（主要是对角线论述），我们可以选出子列 $\{n_{k_j}\}$（以下为方便表述，直接称为 $\{n_k\}$），使得 $J_1(\psi)=\lim\limits_{k\to\infty}\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\psi(f^l(x_k))$ 和 $J_2(\psi)=\lim\limits_{k\to\infty}\frac{1}{n_k}\sum\limits_{l=0}^{n_k-1}\psi(f^l(y_k))$ 都是 $C(X)$ 上的有界线性泛函，且 $f$-不变，且当 $\psi\geq 0$ 时 $J_1,J_2\geq 0$，于是由 Riesz 表示定理，可以分别对应两个符号测度 $\mu_1,\mu_2$，而且它们都是 $f$-不变的正测度. 由于 $J_1(\varphi)\leq a<b\leq J_2(\varphi)$，则 $\mu_1\neq \mu_2$，于是 $f$ 不是唯一遍历的.
     \end{proof}
 
-    其逆命题不一定对，但加条件后就对了：
+    其逆命题也对，但是如果只要求一致收敛没有要求常数，那就错了：
     
     \begin{proposition}[唯一遍历性判定~\uppercase\expandafter{\romannumeral1}]
         给定紧度量空间 $X$ 和连续函数 $f:X\to X$，选取 $C(X)$ 的稠密子集 $\Phi$，若任意 $\varphi\in\Phi$，其时间平均 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\varphi(f^k(x))$ 一致收敛到常数，则 $f$ 唯一遍历.
@@ -196,7 +196,7 @@
         给定紧度量空间 $X$ 和唯一遍历连续函数 $f:X\to X$，设 $\mu$ 是对应的遍历测度. 任取 $U\subset X$ 是开集且 $\mu(\partial U)=0$. 则 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\chi_U(f^k(x))$ 一致收敛到 $\mu(U)$.
     \end{corollary}
     \begin{proof}
-        提示：取上、下的连续函数列逼近，注意零测集之可数并零测，以及注意哪个变量先固定住.
+        取 $\bar{\varphi}_k\geq \chi_U$ 连续，且 $\int_{X}\bar{\varphi}_k d\mu<\mu(U)+\frac{1}{2^n}$，于是 $\frac{1}{n}\sum\limits_{k=0}^{n-1}\chi_U(f^k(x))\leq \frac{1}{n}\sum\limits_{k=0}^{n-1}\bar{\varphi}_k(f^k(x))\stackrel{n\to\infty}{\longrightarrow}\bar{\varphi}_{k,T}(x)=\int_{X}\bar{\varphi}_{k,T}(x)dx=\int_{X}\bar{\varphi}_k(x)dx<\mu(U)+\frac{1}{2^k}$，令 $k\to 0$ 即知 $\varlimsup\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}\chi_U(f^k(x))\leq \mu(U)$. 同理取 $\underline{\varphi}_k\leq \chi_U$ 也有 $\varliminf\limits_{n\to\infty}\frac{1}{n}\sum\limits_{k=0}^{n-1}\chi_U(f^k(x))\geq \mu(U)$，于是即证.
     \end{proof}
 
     \begin{definition}[支撑集]
